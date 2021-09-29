@@ -38,13 +38,42 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog():
 
+    catalog = {'artist': None,
+                'artworkmedium': None,
+                'artworks': None}
+
+    catalog['artist'] = lt.newList('ARRAY_LIST')
+    catalog['artworks'] = lt.newList('ARRAY_LIST')
+
+    catalog['artworkmedium'] = mp.newMap(815,
+                                        maptype='PROBING',
+                                        loadfactor=0.5,
+                                        comparefunction=compareMapMedium)
+
+    return catalog
 # Funciones para agregar informacion al catalogo
 
+def addartworks(catalog, artwork):
+    lt.addLast(catalog['artworks'], artwork)
+    mediums = artwork['Medium'].split(",")
+
+
 # Funciones para creacion de datos
+
 
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+def compareMapMedium(id, tag):
+    tagentry = me.getKey(tag)
+    if (id == tagentry):
+        return 0
+    elif (id > tagentry):
+        return 1
+    else:
+        return 0
+
 
 # Funciones de ordenamiento
