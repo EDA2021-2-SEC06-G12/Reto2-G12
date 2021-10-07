@@ -47,33 +47,76 @@ def newCatalog():
     catalog['artist'] = lt.newList('ARRAY_LIST')
     catalog['artworks'] = lt.newList('ARRAY_LIST')
 
-    catalog['artworkmedium'] = mp.newMap(815,
+    catalog['Medium'] = mp.newMap(815,
                                         maptype='PROBING',
                                         loadfactor=0.5,
                                         comparefunction=compareMapMedium)
 
+    catalog['Nationality'] = mp.newMap(840,
+                                        maptype='PROBING',
+                                        loadfactor=0.5,
+                                        comparefunction=compareMapNationality)
+    catalog["ObjectID"] = mp.newMap(840,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
+                                        comparefunction=compareMapObjectID)  
+    catalog["ConstituentID"] = mp.newMap(837,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
+                                        comparefunction=compareMapConstituentID)                                 
     return catalog
+
 # Funciones para agregar informacion al catalogo
 
-def addartworks(catalog, artwork):
+def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
     mediums = artwork['Medium'].split(",")
+    mp.put(catalog["ObjectID"], artwork["ObjectID"], artwork)
 
-
+def addArtist(catalog, artist):
+    lt.addLast(catalog['artist'], artist)
+    mp.put(catalog["ConstituentID"],artist["ConstituentID"], artist)
+    
 # Funciones para creacion de datos
 
 
 # Funciones de consulta
+"""def total_obras_Nacionalidad(Nacionalidad,catalog):
+    n_list=lt.newList
+    n=mp.get(catalog['Nationality'])
+    if Nacionalidad == n:
+        for o in 
+        lt.addLast(n_list,Nacionalidad)
+    return lt.size(n_list)"""
 
 # Funciones utilizadas para comparar elementos dentro de una lista
-def compareMapMedium(id, tag):
-    tagentry = me.getKey(tag)
-    if (id == tagentry):
+# Funciones de comparación 
+def compareMapMedium(medium1, medium2):
+    if (medium1 == medium2):
         return 0
-    elif (id > tagentry):
+    elif (medium1 > medium2):
         return 1
     else:
+        return -1
+def compareMapNationality(N1, N2):
+    if (N1 == N2):
         return 0
-
-
+    elif (N1 > N2):
+        return 1
+    else:
+        return -1
+def compareMapObjectID(O1, O2):
+    if (O1 == O2):
+        return 0
+    elif (O1 > O2):
+        return 1
+    else:
+        return -1
+def compareMapConstituentID(C1, C2):
+    if (C1 == C2):
+        return 0
+    elif (C1 > C2):
+        return 1
+    else:
+        return -1
 # Funciones de ordenamiento

@@ -41,6 +41,20 @@ def printMenu():
 
 catalog = None
 
+# Funciones de inicializacion
+
+def initCatalog():
+    """
+    Inicializa el catalogo de libros
+    """
+    return controller.initCatalog()
+
+
+def loadData(catalog):
+    """
+    Carga los libros en el catalogo
+    """
+    controller.loadData(catalog)
 """
 Menu principal
 """
@@ -49,9 +63,12 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog = initCatalog ()
+        loadData (catalog)
+        print('Artistas cargados: ' + str(lt.size(catalog['artist'])))
+        print('Obras cargadas: ' + str(lt.size(catalog['artworks'])))
 
-    elif int(inputs[0]) == 2:
-        pass
+
 
     else:
         sys.exit(0)
