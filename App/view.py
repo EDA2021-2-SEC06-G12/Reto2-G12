@@ -25,6 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
+import time
 
 
 """
@@ -36,39 +37,70 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("1- Inicializar Catálogo")
+    print("2- Cargar información en el catálogo")
+    print("3- Listar cronológicamente los artistas")
+    print("4- Listar cronológicamente las adquisiciones")
+    print("5- Clasificar las obras de un artista por técnica")
+    print("6- Clasificar las obras por la nacionalidad de sus creadores")
+    print("7- Transportar obras de un departamento")
+    print("8- Encontrar los artistas más prolíficos del museo")
+    print("0- Salir del Menu")
 
-catalog = None
 
 # Funciones de inicializacion
 
 def initCatalog():
-    """
-    Inicializa el catalogo de libros
-    """
     return controller.initCatalog()
 
 
 def loadData(catalog):
-    """
-    Carga los libros en el catalogo
-    """
     controller.loadData(catalog)
+
 """
 Menu principal
 """
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
+
     if int(inputs[0]) == 1:
+        print("Inicializando Catálogo ....")
+        print("Catálogo Inicializado")
+        cont = controller.initCatalog()
+    
+    elif int(inputs[0]) == 2:
         print("Cargando información de los archivos ....")
-        catalog = initCatalog ()
-        loadData (catalog)
-        print('Artistas cargados: ' + str(lt.size(catalog['artist'])))
-        print('Obras cargadas: ' + str(lt.size(catalog['artworks'])))
+        start_time = time.process_time()
+        controller.loadData(cont)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print('Artistas cargados: ' + str(controller.artistSize(cont)))
+        print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
+        print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
+        print('Medios cargados: ' + str(controller.MediumSize(cont)))
+        print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
+    
+    elif int(inputs[0]) == 3:
+        A_I = input ("Ingresa el año inicial: ")
+        A_FN = input ("Ingresa el año final: ")
 
+    elif int(inputs[0]) == 4:
+        F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ")
+        F_FN = input ("Ingresa la fecha final (AAAA-MM-DD): ")
 
+    elif int(inputs[0]) == 5:
+        Name = input ("Ingresa el nombre del artista: ")
+        
+    elif int(inputs[0]) == 6:
+        print("Obras por la nacionalidad de sus creadores: ")
+    
+    elif int(inputs[0]) == 7:
+        print("Transportar obras de un departamento: ")
+    
+    elif int(inputs[0]) == 8:
+        print("Encontrar los artistas más prolíficos del museo: ")
+        
 
     else:
         sys.exit(0)

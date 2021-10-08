@@ -41,56 +41,112 @@ los mismos.
 def newCatalog():
 
     catalog = {'artist': None,
+                'artworks': None,
                 'artworkmedium': None,
-                'artworks': None}
+                'artistNationality': None}
+    
+    catalog['artist'] = lt.newList('ARRAY_LIST', compareConstituentID)
+    catalog['artworks'] = lt.newList('ARRAY_LIST', compareObjectID)
 
-    catalog['artist'] = lt.newList('ARRAY_LIST')
-    catalog['artworks'] = lt.newList('ARRAY_LIST')
+    '''
+    Este indice crea un map cuya llave es el medio de una obra
+    '''
 
-    catalog['Medium'] = mp.newMap(815,
-                                        maptype='PROBING',
-                                        loadfactor=0.5,
+    catalog['artworkmedium'] = mp.newMap(815,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
                                         comparefunction=compareMapMedium)
+    
+    '''
+    Este indice crea un map cuya llave es la nacionalidad de un artista
+    '''
 
-    catalog['Nationality'] = mp.newMap(840,
-                                        maptype='PROBING',
-                                        loadfactor=0.5,
+    catalog['artistNationality'] = mp.newMap(840,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
                                         comparefunction=compareMapNationality)
-    catalog["ObjectID"] = mp.newMap(840,
-                                        maptype='CHAINING',
-                                        loadfactor=4.0,
-                                        comparefunction=compareMapObjectID)  
-    catalog["ConstituentID"] = mp.newMap(837,
-                                        maptype='CHAINING',
-                                        loadfactor=4.0,
-                                        comparefunction=compareMapConstituentID)                                 
+                                     
     return catalog
 
 # Funciones para agregar informacion al catalogo
 
-def addArtworks(catalog, artwork):
-    lt.addLast(catalog['artworks'], artwork)
-    mediums = artwork['Medium'].split(",")
-    mp.put(catalog["ObjectID"], artwork["ObjectID"], artwork)
-
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
-    mp.put(catalog["ConstituentID"],artist["ConstituentID"], artist)
+    addMediums(catalog)
+
+def addArtworks(catalog, artwork):
+    lt.addLast(catalog['artworks'], artwork)
+    addNationality(catalog)
+
+def addMediums(catalog):
+    for obra in catalog['artworks']['elements']:
+        medio = obra['Medium']
+        ConsID = obra['ConstituentID']
+        mp.put(catalog['artworkmedium'], medio, ConsID)
+
+
+def addNationality(catalog):
+    for artista in catalog['artist']['elements']:
+        nacionalidad =  artista['Nationality']
+        ConsID =  artista['ConstituentID']
+        mp.put(catalog['artistNationality'], nacionalidad, ConsID)
     
 # Funciones para creacion de datos
 
 
 # Funciones de consulta
-"""def total_obras_Nacionalidad(Nacionalidad,catalog):
-    n_list=lt.newList
-    n=mp.get(catalog['Nationality'])
-    if Nacionalidad == n:
-        for o in 
-        lt.addLast(n_list,Nacionalidad)
-    return lt.size(n_list)"""
+
+def artistSize(catalog):
+    """
+    Número de artistas en el catálogo
+    """
+    return lt.size(catalog['artist'])
+
+def artworkSize(catalog):
+    """
+    Número de obras de arte en el catálogo
+    """
+    return lt.size(catalog['artworks'])
+
+def NationalitySize(catalog):
+    """
+    Número de Nacionalidades en el catálogo
+    """
+    return mp.size(catalog['artistNationality'])
+
+def MediumSize(catalog):
+    """
+    Número de Medios en el catálogo
+    """
+    return mp.size(catalog['artworkmedium'])
 
 # Funciones utilizadas para comparar elementos dentro de una lista
-# Funciones de comparación 
+
+
+# Funciones de comparación
+
+def compareConstituentID(C1, C2):
+    '''
+    Función de comparación para la lista de artistas (Carga de Datos)
+    '''
+    if (C1 == C2):
+        return 0
+    elif (C1 > C2):
+        return 1
+    else:
+        return -1
+
+def compareObjectID(O1, O2):
+    '''
+    Función de comparación para la lista de obras (Carga de Datos)
+    '''
+    if (O1 == O2):
+        return 0
+    elif (O1 > O2):
+        return 1
+    else:
+        return -1
+
 def compareMapMedium(medium1, medium2):
     if (medium1 == medium2):
         return 0
@@ -98,6 +154,7 @@ def compareMapMedium(medium1, medium2):
         return 1
     else:
         return -1
+
 def compareMapNationality(N1, N2):
     if (N1 == N2):
         return 0
@@ -105,18 +162,5 @@ def compareMapNationality(N1, N2):
         return 1
     else:
         return -1
-def compareMapObjectID(O1, O2):
-    if (O1 == O2):
-        return 0
-    elif (O1 > O2):
-        return 1
-    else:
-        return -1
-def compareMapConstituentID(C1, C2):
-    if (C1 == C2):
-        return 0
-    elif (C1 > C2):
-        return 1
-    else:
-        return -1
+
 # Funciones de ordenamiento

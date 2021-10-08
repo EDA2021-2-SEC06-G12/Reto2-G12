@@ -53,3 +53,27 @@ def loadArtworks (catalog):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def artistSize(catalog):
+    """
+    Numero de artistas cargados al catalogo
+    """
+    return model.artistSize(catalog)
+
+
+def artworkSize(catalog):
+    """
+    Numero de Obras de Arte cargados al catalogo
+    """
+    return model.artworkSize(catalog)
+
+def NationalitySize(catalog):
+    """
+    Número de Nacionalidades en el catálogo
+    """
+    return model.NationalitySize(catalog)
+
+def MediumSize(catalog):
+    """
+    Número de Medios en el catálogo
+    """
+    return model.MediumSize(catalog)
