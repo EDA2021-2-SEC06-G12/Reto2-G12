@@ -77,6 +77,15 @@ def MediumSize(catalog):
     """
     return model.MediumSize(catalog)
 
+def BeginDateSize(catalog):
+    """
+    Número de Medios en el catálogo
+    """
+    return model.BeginDateSize(catalog)
+
+def crono_BeginDate(A_I, A_FN,catalog):
+
+    return model.crono_BeginDate(A_I, A_FN,catalog)
 def getnationality(catalog):
 
     return model.getnationality(catalog)
@@ -85,3 +94,6 @@ def getmedio(catalog):
 
     return model.getmedio(catalog)
 
+def getfecha(catalog):
+
+    return model.getfecha(catalog)

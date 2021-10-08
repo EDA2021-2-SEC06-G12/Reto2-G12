@@ -66,14 +66,17 @@ def newCatalog():
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparemedio)
-                                     
+    catalog['BeginDate']  = mp.newMap(840,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
+                                        comparefunction=comparefecha)                                
     return catalog
 
 # Funciones para agregar informacion al catalogo
 
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
-    
+    addN_fecha(catalog)
 
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
@@ -88,10 +91,16 @@ def addMediums(catalog):
         mp.put(catalog['artworkmedium'], medio, OBJID)
 
 def addNationality(catalog):
-    for artista in catalog['artist']['elements']:
+       for artista in catalog['artist']['elements']:
         nacionalidad =  artista['Nationality']
         ConsID =  artista['ConstituentID']
         mp.put(catalog['artistNationality'], nacionalidad, ConsID)
+
+def addN_fecha(catalog):
+    for artista in catalog['artist']['elements']:
+        fecha =  artista['BeginDate']
+        name =  artista['DisplayName']
+        mp.put(catalog['BeginDate'], fecha, name)
 
 # Funciones para creacion de datos
 def newnacionalidad(nacionalidad):
@@ -130,6 +139,31 @@ def newmedio(medio):
     return medium
 
 # Funciones de consulta
+#    REQUERIMIENTO 1(PRUEBA)
+def crono_BeginDate(A_I, A_FN,catalog):
+    lst_fecha = lt.newList('ARRAY_LIST')
+    fechas_llave= mp.keySet(catalog['BeginDate'])
+    print (fechas_llave)
+    name_value= mp.valueSet(catalog['BeginDate'])
+    for fecha in fechas_llave:
+        if (fecha >= A_I) and (fecha <= A_FN):
+            for artist in catalog["artist"]["elements"]:
+                if name_value in artist["DisplayName"]:
+                    datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
+                    lt.addlast(lst_fecha , datos_artist)
+
+    return lst_fecha
+
+
+
+
+
+
+
+
+
+
+
 
 def artistSize(catalog):
     """
@@ -154,6 +188,12 @@ def MediumSize(catalog):
     Número de Medios en el catálogo
     """
     return mp.size(catalog['artworkmedium'])
+
+def BeginDateSize(catalog):
+    """
+    Número de Medios en el catálogo
+    """
+    return mp.size(catalog['BeginDate'])    
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -206,6 +246,25 @@ def comparemedio(keymedio,medio):
         return 1
     else:
         return -1
+
+#comparacion requqrimiento 1(pruebaaa)
+def comparefecha(keyfecha,fecha):
+    """Name
+    Compara dos nombres de autor. El primero es una cadena
+    y el segundo un entry de un map
+    """
+    fechaentry = me.getKey(fecha)
+    if (keyfecha == fechaentry):
+        return 0
+    elif (keyfecha > fechaentry):
+        return 1
+    else:
+        return -1
+
+
+
+
+
 # Funciones de ordenamiento
 
 
@@ -216,13 +275,18 @@ def getnationality(catalog):
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.keySet(catalog['artistNationality'])
+    return mp.valueSet(catalog['artistNationality'])
 
 def getmedio(catalog):
     
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.keySet(catalog['artworkmedium'])
+    return mp.valueSet(catalog['artworkmedium'])
 
-
+def getfecha(catalog):
+    
+    """
+    Número de Nacionalidades en el catálogo
+    """
+    return mp.valueSet(catalog['BeginDate'])

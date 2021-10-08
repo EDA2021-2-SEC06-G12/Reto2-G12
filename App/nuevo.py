@@ -112,5 +112,14 @@ def addmedios(catalog, medio, artwork):
         mp.put(medios, medio, artwork)
     lt.addLast(medio['artwork'], artwork) 
 
+
+lista de obras por una nacionalidad 
+    for obra in catalog['artworks']['elements']:
+            ConsOID= obra['ConstituentID']
+            OBJID= obra['ObjectID']
+            for CID in ConsOID:
+                if CID == ConsID:
+                    lt.addLast(lst_obras,OBJID)
+
 """
 #####################################################
