@@ -67,3 +67,50 @@ def compareMapConstituentID(C1, C2):
         for o in 
         lt.addLast(n_list,Nacionalidad)
     return lt.size(n_list)'''
+
+
+
+    #FUNCIONES DE PRUEBA -DANIELA 
+
+    ##########################################################
+
+#FUNCION DE AGREGAR INFO AL CATALOGO (PRUEBAA)
+"""
+def addnacionalidadobras(catalog, nacionalidad, artwork):
+    ""
+    Esta función adiciona un libro a la lista de libros publicados
+    por un autor.
+
+    nacionalidad = input 
+    Cuando se adiciona el libro se actualiza el promedio de dicho autor
+    ""
+    nacionalidades = catalog['artistNationality'] 
+    existnacionalidad = mp.contains(artwork, nacionalidades)
+    if existnacionalidad:
+        entry = mp.get(nacionalidades, artwork)
+        nacionalidad = me.getValue(entry)
+    else:
+        nacionalidad = newnacionalidad(nacionalidad)
+        mp.put(nacionalidades, nacionalidad, artwork)
+    lt.addLast(nacionalidad['artwork'], artwork)
+
+def addmedios(catalog, medio, artwork):
+    ""
+    Esta función adiciona un libro a la lista de libros publicados
+    por un autor.
+
+    nacionalidad = input 
+    Cuando se adiciona el libro se actualiza el promedio de dicho autor
+    ""
+    medios = catalog['artistNationality'] 
+    existmedios = mp.contains(artwork, medios)
+    if existmedios:
+        entry = mp.get(medios, artwork)
+        medio = me.getValue(entry)
+    else:
+        medio = newmedio(medios)
+        mp.put(medios, medio, artwork)
+    lt.addLast(medio['artwork'], artwork) 
+
+"""
+#####################################################

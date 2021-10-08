@@ -59,7 +59,6 @@ def artistSize(catalog):
     """
     return model.artistSize(catalog)
 
-
 def artworkSize(catalog):
     """
     Numero de Obras de Arte cargados al catalogo
@@ -71,7 +70,13 @@ def NationalitySize(catalog):
     Número de Nacionalidades en el catálogo
     """
     return model.NationalitySize(catalog)
-##################################################################
+
+def MediumSize(catalog):
+    """
+    Número de Medios en el catálogo
+    """
+    return model.MediumSize(catalog)
+
 def getnationality(catalog):
 
     return model.getnationality(catalog)
@@ -80,10 +85,3 @@ def getmedio(catalog):
 
     return model.getmedio(catalog)
 
-#################################################################
-
-def MediumSize(catalog):
-    """
-    Número de Medios en el catálogo
-    """
-    return model.MediumSize(catalog)

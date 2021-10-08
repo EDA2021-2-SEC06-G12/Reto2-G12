@@ -25,6 +25,7 @@
  """
 
 
+from DISClib.DataStructures.arraylist import newList
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
@@ -72,83 +73,33 @@ def newCatalog():
 
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
-    addMediums(catalog)
+    
 
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
     addNationality(catalog)
+    addMediums(catalog)
 
 def addMediums(catalog):
+    
     for obra in catalog['artworks']['elements']:
         medio = obra['Medium']
-        ConsID = obra['ConstituentID']
-        mp.put(catalog['artworkmedium'], medio, ConsID)
-
-
-##########################################################
-
-#FUNCION DE AGREGAR INFO AL CATALOGO (PRUEBAA)
-
-def addnacionalidadobras(catalog, nacionalidad, artwork):
-    """
-    Esta función adiciona un libro a la lista de libros publicados
-    por un autor.
-
-    nacionalidad = input 
-    Cuando se adiciona el libro se actualiza el promedio de dicho autor
-    """
-    nacionalidades = catalog['artistNationality'] 
-    existnacionalidad = mp.contains(artwork, nacionalidades)
-    if existnacionalidad:
-        entry = mp.get(nacionalidades, artwork)
-        nacionalidad = me.getValue(entry)
-    else:
-        nacionalidad = newnacionalidad(nacionalidad)
-        mp.put(nacionalidades, nacionalidad, artwork)
-    lt.addLast(nacionalidad['artwork'], artwork)
-
-def addmedios(catalog, medio, artwork):
-    """
-    Esta función adiciona un libro a la lista de libros publicados
-    por un autor.
-
-    nacionalidad = input 
-    Cuando se adiciona el libro se actualiza el promedio de dicho autor
-    """
-    medios = catalog['artistNationality'] 
-    existmedios = mp.contains(artwork, medios)
-    if existmedios:
-        entry = mp.get(medios, artwork)
-        medio = me.getValue(entry)
-    else:
-        medio = newmedio(medios)
-        mp.put(medios, medio, artwork)
-    lt.addLast(medio['artwork'], artwork) 
-
-
-#####################################################
-
-
-
+        OBJID = obra['ObjectID']
+        mp.put(catalog['artworkmedium'], medio, OBJID)
 
 def addNationality(catalog):
     for artista in catalog['artist']['elements']:
         nacionalidad =  artista['Nationality']
         ConsID =  artista['ConstituentID']
         mp.put(catalog['artistNationality'], nacionalidad, ConsID)
-    
+
 # Funciones para creacion de datos
-
-
-###################################################################
-
-#FUNCION DE NUEVA NACIONALIDAD (PRUEBAA)
 def newnacionalidad(nacionalidad):
     """
     Crea una nueva estructura para modelar los libros de un autor
     y su promedio de ratings. Se crea una lista para guardar los
     libros de dicho autor.
-
+    
     nacionalidad = autor 
     obras =libros
     """
@@ -177,10 +128,6 @@ def newmedio(medio):
     medium['artwork'] = lt.newList('SINGLE_LINKED', comparemedio)
 
     return medium
-
-#######################################################################################
-
-
 
 # Funciones de consulta
 
@@ -235,24 +182,6 @@ def compareObjectID(O1, O2):
     else:
         return -1
 
-def compareMapMedium(medium1, medium2):
-    if (medium1 == medium2):
-        return 0
-    elif (medium1 > medium2):
-        return 1
-    else:
-        return -1
-
-def compareMapNationality(N1, N2):
-    if (N1 == N2):
-        return 0
-    elif (N1 > N2):
-        return 1
-    else:
-        return -1
-###################################################
-
-#FUNCION DE COMPARACION DE NACIONALIDAD (PRUEBAAA)
 def comparenationality(keynacionalidad,nacionalidad):
     """Name
     Compara dos nombres de autor. El primero es una cadena
@@ -279,7 +208,7 @@ def comparemedio(keymedio,medio):
         return -1
 # Funciones de ordenamiento
 
-################################################################
+
 #funcion de get
 
 def getnationality(catalog):
@@ -287,7 +216,7 @@ def getnationality(catalog):
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.valueSet(catalog['artistNationality'])
+    return mp.keySet(catalog['artistNationality'])
 
 def getmedio(catalog):
     
@@ -297,4 +226,3 @@ def getmedio(catalog):
     return mp.keySet(catalog['artworkmedium'])
 
 
-#############################################################################
