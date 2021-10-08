@@ -39,6 +39,7 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Inicializar Catálogo")
+    print("9- Total de obras por una nacionalidad")
     print("2- Cargar información en el catálogo")
     print("3- Listar cronológicamente los artistas")
     print("4- Listar cronológicamente las adquisiciones")
@@ -74,20 +75,22 @@ while True:
     elif int(inputs[0]) == 2:
         #nacionalidad= input('ingrese la nacionalidad')
         print("Cargando información de los archivos ....")
-        start_time = time.process_time()
+        #start_time = time.process_time()
         controller.loadData(cont)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        print('Artistas cargados: ' + str(controller.artistSize(cont)))
-        print('Obras de Arte carga1das: ' + str(controller.artworkSize(cont)))
+        #stop_time = time.process_time()
+        #elapsed_time_mseg = (stop_time - start_time)*1000
+        #print('Artistas cargados: ' + str(controller.artistSize(cont)))
+        #print('Obras de Arte carga1das: ' + str(controller.artworkSize(cont)))
         #print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
-        #print('las nacionalidades son: ' + str(controller.getnationality(cont)))
+       # print('las nacionalidades son: ' + str(controller.getnationality(cont)))
         #print('Medios cargados: ' + str(controller.MediumSize(cont)))
         #print('los medios son: ' + str(controller.getmedio(cont)))
         #print('Las fechas cargadas son: '+ str(controller.BeginDateSize(cont)))
         #print('las fechas son: '+ str(controller.getfecha(cont)) )
-        print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
-        
+        #print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
+    elif int(inputs[0]) == 9:
+        nacionalidad= input("ingrese la nacionalidad: ")
+        print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
         A_FN = input ("Ingresa el año final: ")

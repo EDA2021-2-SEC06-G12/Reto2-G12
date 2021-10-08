@@ -53,6 +53,10 @@ def loadArtworks (catalog):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def T_obras_nacionalidad (nacionalidad,catalog):
+    return model.T_obras_nacionalidad (nacionalidad,catalog)
+
+
 def artistSize(catalog):
     """
     Numero de artistas cargados al catalogo

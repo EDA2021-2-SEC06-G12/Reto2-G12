@@ -26,11 +26,11 @@
 
 
 from DISClib.DataStructures.arraylist import newList
+from DISClib.Algorithms.Sorting import mergesort as mrgs
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
-from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
 
 """
@@ -82,6 +82,7 @@ def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
     addNationality(catalog)
     addMediums(catalog)
+    
 
 def addMediums(catalog):
     
@@ -91,10 +92,33 @@ def addMediums(catalog):
         mp.put(catalog['artworkmedium'], medio, OBJID)
 
 def addNationality(catalog):
-       for artista in catalog['artist']['elements']:
-        nacionalidad =  artista['Nationality']
-        ConsID =  artista['ConstituentID']
-        mp.put(catalog['artistNationality'], nacionalidad, ConsID)
+    lst=[]
+    for artista in (catalog['artist']['elements']):
+        n= artista['Nationality']
+        o=artista['ConstituentID']
+        for obra in catalog['artworks']['elements']:
+                coids= obra['ConstituentID']
+                if o in coids:
+                    objectID=obra['ObjectID']
+                    lst.append(objectID)
+                    mp.put(catalog['artistNationality'],n,lst)
+            
+
+def ObtenerNa(map, catalog):
+    obras = catalog['artworks']['elements']
+    for obra in obras:
+        map
+def lista_obrN(catalog):
+    lst=[]
+    for artista in (catalog['artist']['elements']):
+        n= artista['Nationality']
+        o=artista['ConstituentID']
+    for obra in catalog['artworks']['elements']:
+            coids= obra['ConstituentID']
+            if o in coids:
+                objectID=obra['ObjectID']
+                lst.append(objectID)
+                mp.put(catalog['artistNationality'],n,lst)
 
 def addN_fecha(catalog):
     for artista in catalog['artist']['elements']:
@@ -140,30 +164,38 @@ def newmedio(medio):
 
 # Funciones de consulta
 #    REQUERIMIENTO 1(PRUEBA)
-def crono_BeginDate(A_I, A_FN,catalog):
+def CRONO (A_I, A_FN,catalog):
     lst_fecha = lt.newList('ARRAY_LIST')
+
     fechas_llave= mp.keySet(catalog['BeginDate'])
-    print (fechas_llave)
     name_value= mp.valueSet(catalog['BeginDate'])
     for fecha in fechas_llave:
         if (fecha >= A_I) and (fecha <= A_FN):
             for artist in catalog["artist"]["elements"]:
-                if name_value in artist["DisplayName"]:
-                    datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
-                    lt.addlast(lst_fecha , datos_artist)
+                for name in name_value:
+                    if name in artist["DisplayName"]:
+                        datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
+                        lt.addlast(lst_fecha , datos_artist)
 
     return lst_fecha
 
+def crono_BeginDate(A_I, A_FN,catalog):
+    lst_fecha = []
+    fechas_llave = getfecha(catalog)
+    orden = ordenamiento_Ndate(fechas_llave)
+    for fecha in orden:
+        if (fecha >= A_I) and (fecha <= A_FN):
+            name= mp.get(catalog['BeginDate'], fecha)
+            for artist in catalog["artist"]["elements"]:
+                if name in artist["DisplayName"]:
+                        datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
+                        lst_fecha.append(datos_artist)
+    return lst_fecha
 
-
-
-
-
-
-
-
-
-
+def T_obras_nacionalidad (nacionalidad,catalog):
+    
+    return mp.get(catalog['artistNationality'],nacionalidad)
+    
 
 def artistSize(catalog):
     """
@@ -261,12 +293,24 @@ def comparefecha(keyfecha,fecha):
     else:
         return -1
 
-
-
+def cmpA_I(artist1, artist2):
+    if artist1 < artist2:
+        r = True
+    else:
+        r = False 
+    return r
+def cmpo(o1,o2):
+    if o1 < o2:
+        r = True
+    else:
+        r = False 
+    return r
 
 
 # Funciones de ordenamiento
-
+def ordenamiento_Ndate(catalog):
+    sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_I)
+    return sorted_list
 
 #funcion de get
 
@@ -275,18 +319,18 @@ def getnationality(catalog):
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.valueSet(catalog['artistNationality'])
+    return mp.keySet(catalog['artistNationality'])
 
 def getmedio(catalog):
     
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.valueSet(catalog['artworkmedium'])
+    return mp.keySet(catalog['artworkmedium'])
 
 def getfecha(catalog):
     
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.valueSet(catalog['BeginDate'])
+    return mp.keySet(catalog['BeginDate'])
