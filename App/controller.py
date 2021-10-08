@@ -33,7 +33,7 @@ El controlador se encarga de mediar entre la vista y el modelo.
 def initCatalog():
     catalog = model.newCatalog()
     return catalog
-    
+
 # Funciones para la carga de datos
 def loadData (catalog):
     loadArtists (catalog)
@@ -71,6 +71,16 @@ def NationalitySize(catalog):
     Número de Nacionalidades en el catálogo
     """
     return model.NationalitySize(catalog)
+##################################################################
+def getnationality(catalog):
+
+    return model.getnationality(catalog)
+
+def getmedio(catalog):
+
+    return model.getmedio(catalog)
+
+#################################################################
 
 def MediumSize(catalog):
     """

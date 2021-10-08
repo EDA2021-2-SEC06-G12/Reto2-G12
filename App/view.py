@@ -70,15 +70,18 @@ while True:
         cont = controller.initCatalog()
     
     elif int(inputs[0]) == 2:
+        #nacionalidad= input('ingrese la nacionalidad')
         print("Cargando información de los archivos ....")
         start_time = time.process_time()
         controller.loadData(cont)
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
-        print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
+        print('Obras de Arte carga1das: ' + str(controller.artworkSize(cont)))
         print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
+        print('las nacionalidades son: ' + str(controller.getnationality(cont)))
         print('Medios cargados: ' + str(controller.MediumSize(cont)))
+        print('los medios son: ' + str(controller.getmedio(cont)))
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
     
     elif int(inputs[0]) == 3:
