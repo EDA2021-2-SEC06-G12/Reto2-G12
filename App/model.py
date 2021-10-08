@@ -104,10 +104,6 @@ def addNationality(catalog):
                     mp.put(catalog['artistNationality'],n,lst)
             
 
-def ObtenerNa(map, catalog):
-    obras = catalog['artworks']['elements']
-    for obra in obras:
-        map
 def lista_obrN(catalog):
     lst=[]
     for artista in (catalog['artist']['elements']):
