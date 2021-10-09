@@ -54,8 +54,8 @@ def newCatalog():
     '''
 
     catalog['artworkmedium'] = mp.newMap(815,
-                                        maptype='CHAINING',
-                                        loadfactor=4.0,
+                                        maptype='PROBING',
+                                        loadfactor=2.0,
                                         comparefunction=comparenationality)
     
     '''
@@ -63,8 +63,8 @@ def newCatalog():
     '''
 
     catalog['artistNationality'] = mp.newMap(840,
-                                        maptype='CHAINING',
-                                        loadfactor=4.0,
+                                        maptype='PROBING',
+                                        loadfactor=2.0,
                                         comparefunction=comparemedio)
     catalog['BeginDate']  = mp.newMap(840,
                                         maptype='CHAINING',

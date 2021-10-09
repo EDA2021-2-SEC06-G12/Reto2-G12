@@ -39,7 +39,6 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Inicializar Catálogo")
-    print("9- Total de obras por una nacionalidad")
     print("2- Cargar información en el catálogo")
     print("3- Listar cronológicamente los artistas")
     print("4- Listar cronológicamente las adquisiciones")
@@ -47,6 +46,7 @@ def printMenu():
     print("6- Clasificar las obras por la nacionalidad de sus creadores")
     print("7- Transportar obras de un departamento")
     print("8- Encontrar los artistas más prolíficos del museo")
+    print("9- Total de obras por una nacionalidad")
     print("0- Salir del Menu")
 
 
@@ -88,9 +88,7 @@ while True:
         #print('Las fechas cargadas son: '+ str(controller.BeginDateSize(cont)))
         #print('las fechas son: '+ str(controller.getfecha(cont)) )
         #print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
-    elif int(inputs[0]) == 9:
-        nacionalidad= input("ingrese la nacionalidad: ")
-        print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))
+    
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
         A_FN = input ("Ingresa el año final: ")
@@ -115,7 +113,9 @@ while True:
     
     elif int(inputs[0]) == 8:
         print("Encontrar los artistas más prolíficos del museo: ")
-        
+    elif int(inputs[0]) == 9:
+        nacionalidad= input("ingrese la nacionalidad: ")
+        print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))    
 
     else:
         sys.exit(0)
