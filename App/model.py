@@ -82,7 +82,7 @@ def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
     addNationality(catalog)
     addMediums(catalog)
-    
+
 
 def addMediums(catalog):
     

@@ -59,7 +59,7 @@ def T_obras_nacionalidad (nacionalidad,catalog):
 
 def artistSize(catalog):
     """
-    Numero de artistas cargados al catalogo
+    Numero de artistas cargados al catalogo 
     """
     return model.artistSize(catalog)
 
