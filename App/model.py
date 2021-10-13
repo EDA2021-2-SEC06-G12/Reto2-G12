@@ -53,7 +53,7 @@ def newCatalog():
     Este indice crea un map cuya llave es el medio de una obra
     '''
 
-    catalog['artworkmedium'] = mp.newMap(815,
+    catalog['artworkmedium'] = mp.newMap(2000,
                                         maptype='PROBING',
                                         loadfactor=2.0,
                                         comparefunction=comparenationality)
@@ -62,11 +62,11 @@ def newCatalog():
     Este indice crea un map cuya llave es la nacionalidad de un artista
     '''
 
-    catalog['artistNationality'] = mp.newMap(840,
+    catalog['artistNationality'] = mp.newMap(2000,
                                         maptype='PROBING',
                                         loadfactor=2.0,
                                         comparefunction=comparemedio)
-    catalog['BeginDate']  = mp.newMap(840,
+    catalog['BeginDate']  = mp.newMap(2000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparefecha)                                
@@ -103,19 +103,6 @@ def addNationality(catalog):
                     lst.append(objectID)
                     mp.put(catalog['artistNationality'],n,lst)
             
-
-def lista_obrN(catalog):
-    lst=[]
-    for artista in (catalog['artist']['elements']):
-        n= artista['Nationality']
-        o=artista['ConstituentID']
-    for obra in catalog['artworks']['elements']:
-            coids= obra['ConstituentID']
-            if o in coids:
-                objectID=obra['ObjectID']
-                lst.append(objectID)
-                mp.put(catalog['artistNationality'],n,lst)
-
 def addN_fecha(catalog):
     for artista in catalog['artist']['elements']:
         fecha =  artista['BeginDate']
@@ -189,8 +176,12 @@ def crono_BeginDate(A_I, A_FN,catalog):
     return lst_fecha
 
 def T_obras_nacionalidad (nacionalidad,catalog):
-    
-    return mp.get(catalog['artistNationality'],nacionalidad)
+    contador=0
+    for n_llave in mp.keySet(catalog['artistNationality']):
+        if nacionalidad== n_llave:
+            contador += 1
+    return contador 
+
     
 
 def artistSize(catalog):
@@ -315,7 +306,8 @@ def getnationality(catalog):
     """
     Número de Nacionalidades en el catálogo
     """
-    return mp.keySet(catalog['artistNationality'])
+    #mp.keySet(catalog['artistNationality'])
+    return mp.get(catalog['artistNationality'],["American"])
 
 def getmedio(catalog):
     

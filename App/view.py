@@ -82,7 +82,7 @@ while True:
         #print('Artistas cargados: ' + str(controller.artistSize(cont)))
         #print('Obras de Arte carga1das: ' + str(controller.artworkSize(cont)))
         #print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
-       # print('las nacionalidades son: ' + str(controller.getnationality(cont)))
+        print('las nacionalidades son: ' + str(controller.getnationality(cont)))
         #print('Medios cargados: ' + str(controller.MediumSize(cont)))
         #print('los medios son: ' + str(controller.getmedio(cont)))
         #print('Las fechas cargadas son: '+ str(controller.BeginDateSize(cont)))
