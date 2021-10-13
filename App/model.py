@@ -92,7 +92,7 @@ def addMediums(catalog):
         mp.put(catalog['artworkmedium'], medio, OBJID)
 
 def addNationality(catalog):
-    lst=[]
+    lst = lt.newList('ARRAY_LIST')
     for artista in (catalog['artist']['elements']):
         n= artista['Nationality']
         o=artista['ConstituentID']
@@ -100,12 +100,12 @@ def addNationality(catalog):
                 coids= obra['ConstituentID']
                 if o in coids:
                     objectID=obra['ObjectID']
-                    lst.append(objectID)
+                    lt.addLast(lst, objectID)
                     mp.put(catalog['artistNationality'],n,lst)
             
 
 def lista_obrN(catalog):
-    lst=[]
+    lst = lt.newList('ARRAY_LIST')
     for artista in (catalog['artist']['elements']):
         n= artista['Nationality']
         o=artista['ConstituentID']
@@ -113,7 +113,7 @@ def lista_obrN(catalog):
             coids= obra['ConstituentID']
             if o in coids:
                 objectID=obra['ObjectID']
-                lst.append(objectID)
+                lt.addLast(lst, objectID)
                 mp.put(catalog['artistNationality'],n,lst)
 
 def addN_fecha(catalog):
@@ -171,12 +171,12 @@ def CRONO (A_I, A_FN,catalog):
                 for name in name_value:
                     if name in artist["DisplayName"]:
                         datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
-                        lt.addlast(lst_fecha , datos_artist)
+                        lt.addLast(lst_fecha , datos_artist)
 
     return lst_fecha
 
 def crono_BeginDate(A_I, A_FN,catalog):
-    lst_fecha = []
+    lst_fecha = lt.newList('ARRAY_LIST')
     fechas_llave = getfecha(catalog)
     orden = ordenamiento_Ndate(fechas_llave)
     for fecha in orden:
@@ -185,7 +185,7 @@ def crono_BeginDate(A_I, A_FN,catalog):
             for artist in catalog["artist"]["elements"]:
                 if name in artist["DisplayName"]:
                         datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
-                        lst_fecha.append(datos_artist)
+                        lt.addLast(lst_fecha, datos_artist)
     return lst_fecha
 
 def T_obras_nacionalidad (nacionalidad,catalog):
