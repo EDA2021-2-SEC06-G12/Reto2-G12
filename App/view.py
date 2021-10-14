@@ -59,7 +59,12 @@ def initCatalog():
 
 def loadData(catalog):
     controller.loadData(catalog)
+ 
 catalog= None
+
+
+
+
 """
 Menu principal
 """
@@ -69,8 +74,9 @@ while True:
 
     if int(inputs[0]) == 1:
         print("Inicializando Catálogo ....")
-        print("Catálogo Inicializado")
         catalog = controller.initCatalog()
+        print("Catálogo Inicializado")
+        
     
     elif int(inputs[0]) == 2:
         #nacionalidad= input('ingrese la nacionalidad')
@@ -79,8 +85,8 @@ while True:
         controller.loadData(catalog)
         #stop_time = time.process_time()
         #elapsed_time_mseg = (stop_time - start_time)*1000
-        #print('Artistas cargados: ' + str(controller.artistSize(cont)))
-        #print('Obras de Arte carga1das: ' + str(controller.artworkSize(cont)))
+        print('Artistas cargados: ' + str(controller.artistSize(catalog)))
+        print('Obras de Arte carga1das: ' + str(controller.artworkSize(catalog)))
         #print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
         #print('las nacionalidades son: ' + str(controller.getnationality(cont)))
         #print('Medios cargados: ' + str(controller.MediumSize(cont)))
@@ -104,7 +110,7 @@ while True:
 
     elif int(inputs[0]) == 5:
         Name = input ("Ingresa el nombre del artista: ")
-        
+        print('El total de obras y sus primeras y ultimas son:'+ str(controller.clasificacion_medio_t_obra(catalog,Name)))
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
     

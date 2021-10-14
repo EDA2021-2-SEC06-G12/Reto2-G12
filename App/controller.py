@@ -56,7 +56,8 @@ def loadArtworks (catalog):
 def T_obras_nacionalidad (nacionalidad,catalog):
     return model.T_obras_nacionalidad (nacionalidad,catalog)
 
-
+def clasificacion_medio_t_obra(catalog,Name):
+    return model.clasificacion_medio_t_obra(catalog,Name)
 def artistSize(catalog):
     """
     Numero de artistas cargados al catalogo 
