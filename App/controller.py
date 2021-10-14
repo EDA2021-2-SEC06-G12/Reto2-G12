@@ -90,9 +90,9 @@ def BeginDateSize(catalog):
 def crono_BeginDate(A_I, A_FN,catalog):
 
     return model.crono_BeginDate(A_I, A_FN,catalog)
-def getnationality(catalog):
+def getnationality(catalog,nacionalidad):
 
-    return model.getnationality(catalog)
+    return model.getnationality(catalog,nacionalidad)
 
 def getmedio(catalog):
 

@@ -70,19 +70,19 @@ while True:
     if int(inputs[0]) == 1:
         print("Inicializando Catálogo ....")
         print("Catálogo Inicializado")
-        cont = controller.initCatalog()
+        catalog = controller.initCatalog()
     
     elif int(inputs[0]) == 2:
         #nacionalidad= input('ingrese la nacionalidad')
         print("Cargando información de los archivos ....")
         #start_time = time.process_time()
-        controller.loadData(cont)
+        controller.loadData(catalog)
         #stop_time = time.process_time()
         #elapsed_time_mseg = (stop_time - start_time)*1000
         #print('Artistas cargados: ' + str(controller.artistSize(cont)))
         #print('Obras de Arte carga1das: ' + str(controller.artworkSize(cont)))
         #print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
-        print('las nacionalidades son: ' + str(controller.getnationality(cont)))
+        #print('las nacionalidades son: ' + str(controller.getnationality(cont)))
         #print('Medios cargados: ' + str(controller.MediumSize(cont)))
         #print('los medios son: ' + str(controller.getmedio(cont)))
         #print('Las fechas cargadas son: '+ str(controller.BeginDateSize(cont)))
@@ -115,8 +115,8 @@ while True:
         print("Encontrar los artistas más prolíficos del museo: ")
     elif int(inputs[0]) == 9:
         nacionalidad= input("ingrese la nacionalidad: ")
-        print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))    
-
+        #print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))    
+        print('el total de las obras son: ' + str(controller.T_obras_nacionalidad (nacionalidad,catalog)))
     else:
         sys.exit(0)
 sys.exit(0)

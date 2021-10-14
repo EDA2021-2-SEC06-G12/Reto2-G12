@@ -25,7 +25,7 @@
  """
 
 
-from DISClib.DataStructures.arraylist import newList
+#from DISClib.DataStructures.arraylist import newList
 from DISClib.Algorithms.Sorting import mergesort as mrgs
 import config as cf
 from DISClib.ADT import list as lt
@@ -66,6 +66,11 @@ def newCatalog():
                                         maptype='PROBING',
                                         loadfactor=2.0,
                                         comparefunction=comparemedio)
+    catalog['id_artista'] = mp.newMap(2000,
+                                        maptype='PROBING',
+                                        loadfactor=2.0,
+                                        comparefunction=comparemedio)                                    
+
     catalog['BeginDate']  = mp.newMap(2000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
@@ -76,13 +81,17 @@ def newCatalog():
 
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
-    addN_fecha(catalog)
+    addid_artista(catalog,artist)
+    #addN_fecha(catalog)
 
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
-    addNationality(catalog)
     addMediums(catalog)
-
+    lista_ids= artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","")
+    for id_artist in lista_ids.split(","):
+        entry=mp.get(catalog['id_artista'],id_artist)        
+        artista=me.getValue(entry)
+        addNationality(catalog,artista['Nationality'],artwork)
 
 def addMediums(catalog):
     
@@ -91,17 +100,26 @@ def addMediums(catalog):
         OBJID = obra['ObjectID']
         mp.put(catalog['artworkmedium'], medio, OBJID)
 
-def addNationality(catalog):
-    lst = lt.newList('ARRAY_LIST')
-    for artista in (catalog['artist']['elements']):
-        n= artista['Nationality']
-        o=artista['ConstituentID']
-        for obra in catalog['artworks']['elements']:
-                coids= obra['ConstituentID']
-                if o in coids:
-                    objectID=obra['ObjectID']
-                    lt.addLast(lst, objectID)
-                    mp.put(catalog['artistNationality'],n,lst)
+def addid_artista(catalog,artista):
+    artistas= catalog["id_artista"]
+    exist=mp.contains(artistas,artista['ConstituentID'])
+    if not exist:
+        mp.put(artistas,artista['ConstituentID'],artista)
+    
+def addNationality(catalog, nacionality,artwork):
+    n_catalog=catalog['artistNationality']
+    exist_n=mp.contains(n_catalog,nacionality)
+    if exist_n:
+        entry=mp.get(n_catalog,nacionality)
+        n_nacional=me.getValue(entry)   #entrando en el if 
+    else:
+        n_nacional= newnacionalidad(nacionality)
+        mp.put(n_catalog,nacionality,n_nacional)
+
+    lt.addLast(n_nacional['artwork'],artwork)
+
+
+    
             
 def addN_fecha(catalog):
     for artista in catalog['artist']['elements']:
@@ -126,7 +144,6 @@ def newnacionalidad(nacionalidad):
     nationality['artwork'] = lt.newList('SINGLE_LINKED', comparenationality)
 
     return nationality
-
 
 def newmedio(medio):
     """
@@ -176,12 +193,15 @@ def crono_BeginDate(A_I, A_FN,catalog):
     return lst_fecha
 
 def T_obras_nacionalidad (nacionalidad,catalog):
-    contador=0
-    for n_llave in mp.keySet(catalog['artistNationality']):
-        if nacionalidad== n_llave:
-            contador += 1
-    return contador 
-
+    
+    nacionalidades = catalog['artistNationality']
+    existnacionality = mp.contains(nacionalidades, nacionalidad)
+    if existnacionality:
+        entry = mp.get(nacionalidades, nacionalidad)
+        entrynacionality = me.getValue(entry)
+        totnacionalidad = lt.size(entrynacionality['artwork'])
+        return totnacionalidad
+    return 0
     
 
 def artistSize(catalog):
@@ -301,13 +321,13 @@ def ordenamiento_Ndate(catalog):
 
 #funcion de get
 
-def getnationality(catalog):
+def getnationality(catalog, nacionalidad):
     
     """
     Número de Nacionalidades en el catálogo
     """
-    #mp.keySet(catalog['artistNationality'])
-    return mp.get(catalog['artistNationality'],["American"])
+    n=nacionalidad
+    return mp.get(catalog['artistNationality'],n)
 
 def getmedio(catalog):
     
