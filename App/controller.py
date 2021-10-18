@@ -28,13 +28,12 @@ import csv
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
-
-# Inicialización del Catálogo de libros
+# INICIALIZACIÓN DE CATÁLOGO
 def initCatalog():
     catalog = model.newCatalog()
     return catalog
 
-# Funciones para la carga de datos
+# CARGA DE DATOS AL CATÁLOGO
 def loadData (catalog):
     loadArtists (catalog)
     loadArtworks (catalog)
@@ -50,14 +49,7 @@ def loadArtworks (catalog):
     input_file = csv.DictReader(open(artworksfile,encoding='utf-8'))
     for artworks in input_file:
         model.addArtworks(catalog, artworks)
-# Funciones de ordenamiento
 
-# Funciones de consulta sobre el catálogo
-def T_obras_nacionalidad (nacionalidad,catalog):
-    return model.T_obras_nacionalidad (nacionalidad,catalog)
-
-def clasificacion_medio_t_obra(catalog,Name):
-    return model.clasificacion_medio_t_obra(catalog,Name)
 def artistSize(catalog):
     """
     Numero de artistas cargados al catalogo 
@@ -70,35 +62,4 @@ def artworkSize(catalog):
     """
     return model.artworkSize(catalog)
 
-def NationalitySize(catalog):
-    """
-    Número de Nacionalidades en el catálogo
-    """
-    return model.NationalitySize(catalog)
-
-def MediumSize(catalog):
-    """
-    Número de Medios en el catálogo
-    """
-    return model.MediumSize(catalog)
-
-def BeginDateSize(catalog):
-    """
-    Número de Medios en el catálogo
-    """
-    return model.BeginDateSize(catalog)
-
-def crono_BeginDate(A_I, A_FN,catalog):
-
-    return model.crono_BeginDate(A_I, A_FN,catalog)
-def getnationality(catalog,nacionalidad):
-
-    return model.getnationality(catalog,nacionalidad)
-
-def getmedio(catalog):
-
-    return model.getmedio(catalog)
-
-def getfecha(catalog):
-
-    return model.getfecha(catalog)
+#REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)

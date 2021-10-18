@@ -24,9 +24,6 @@
  * Dario Correal - Version inicial
  """
 
-
-#from DISClib.DataStructures.arraylist import newList
-from os import name
 from DISClib.Algorithms.Sorting import mergesort as mrgs
 import config as cf
 from DISClib.ADT import list as lt
@@ -39,7 +36,8 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 los mismos.
 """
 
-# Construccion de modelos
+# INICIALIZACIÓN DE CATÁLOGO
+# Catálogo Vacío
 def newCatalog():
 
     catalog = {'artist': None,
@@ -82,16 +80,30 @@ def newCatalog():
 
     return catalog
 
-# Funciones para agregar informacion al catalogo
 
+# CARGA DE DATOS AL CATÁLOGO
+# Carga de Artistas
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
     addid_artista(catalog,artist)
-    #addN_fecha(catalog)
+    addN_fecha(catalog,artist)
 
+def addid_artista(catalog,artista):
+    artistas= catalog["id_artista"]
+    exist=mp.contains(artistas,artista['ConstituentID'])
+    if not exist:
+        mp.put(artistas,artista['ConstituentID'],artista)
+
+#Requerimiento 1
+def addN_fecha(catalog, artista):
+    artistas= catalog["BeginDate"]
+    exist=mp.contains(artistas,artista['BeginDate'])
+    if not exist:
+        mp.put(artistas,artista['BeginDate'],artista)
+
+# Carga de Obras de Arte
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
-    
     lista_ids= artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","")
     for id_artist in lista_ids.split(","):
         entry=mp.get(catalog['id_artista'],id_artist)        
@@ -99,26 +111,7 @@ def addArtworks(catalog, artwork):
         addNationality(catalog,artista['Nationality'],artwork)
         addartist_artwork(catalog,artista['DisplayName'], artwork)
 
-def addid_artista(catalog,artista):
-    artistas= catalog["id_artista"]
-    exist=mp.contains(artistas,artista['ConstituentID'])
-    if not exist:
-        mp.put(artistas,artista['ConstituentID'],artista)
-    
-def addNationality(catalog, nacionality,artwork):
-    n_catalog=catalog['artistNationality']
-    exist_n=mp.contains(n_catalog,nacionality)
-    if exist_n:
-        entry=mp.get(n_catalog,nacionality)
-        n_nacional=me.getValue(entry)   #entrando en el if 
-    else:
-        n_nacional= newnacionalidad(nacionality)
-        mp.put(n_catalog,nacionality,n_nacional)
-    if lt.isPresent(n_nacional['artwork'],artwork) == 0:
-        lt.addLast(n_nacional['artwork'],artwork)
-
-#///////////////////REQUERIMINTO 3///////////////
-
+#Requerimiento 3
 def addartist_artwork(catalog, name , artwork):  #indice creado 
     o_catalog= catalog['artista_obra']
     exist_m=mp.contains(o_catalog,name)
@@ -131,25 +124,7 @@ def addartist_artwork(catalog, name , artwork):  #indice creado
     if lt.isPresent(name1['artwork'],artwork) == 0:
         lt.addLast(name1['artwork'],artwork)
     lt.addLast(name1['artwork'],artwork)
-#////////////////////////////////////////////////////  
-            
-def addN_fecha(catalog):
-    for artista in catalog['artist']['elements']:
-        fecha =  artista['BeginDate']
-        name=artista['DisplayName']
-        mp.put(catalog['BeginDate'], fecha, name)
 
-# Funciones para creacion de datos
-def newnacionalidad(nacionalidad):
-    
-    nationality = {'Nationality': "",
-              "artwork": None,
-              }
-    nationality['Nationality'] = nacionalidad
-    nationality['artwork'] = lt.newList('SINGLE_LINKED', compareObjectID)
-
-    return nationality
-#///////////////////REQUERIMINTO 3///////////////////////////
 def newname(name):
     
     name = {'name': "",
@@ -159,6 +134,37 @@ def newname(name):
     name['artwork'] = lt.newList('SINGLE_LINKED', compareObjectID)
 
     return name
+
+#Requerimiento 4
+def addNationality(catalog, nacionality, artwork):
+    n_catalog=catalog['artistNationality']
+    exist_n=mp.contains(n_catalog,nacionality)
+    if exist_n:
+        entry=mp.get(n_catalog,nacionality)
+        n_nacional=me.getValue(entry)   #entrando en el if 
+    else:
+        n_nacional= newnacionalidad(nacionality)
+        mp.put(n_catalog,nacionality,n_nacional)
+    if lt.isPresent(n_nacional['artwork'],artwork) == 0:
+        lt.addLast(n_nacional['artwork'],artwork)
+
+def newnacionalidad(nacionalidad):
+
+    nationality = {'Nationality': "",
+              "artwork": None,
+              }
+
+    nationality['Nationality'] = nacionalidad
+    nationality['artwork'] = lt.newList('SINGLE_LINKED', compareObjectID)
+
+    return nationality
+
+
+
+# Funciones para creacion de datos
+
+#///////////////////REQUERIMINTO 3///////////////////////////
+
 #////////////////////////////////////////////////////////////
 def newobra_artist(medio):
     
@@ -259,7 +265,7 @@ def BeginDateSize(catalog):
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 
-# Funciones de comparación
+#FUNCIONES DE COMPARACIÓN
 
 def compareConstituentID(C1, C2):
     '''
@@ -283,9 +289,8 @@ def compareObjectID(O1, O2):
     else:
         return -1
 
-
 def comparenationality(keynacionalidad,nacionalidad):
-    """Namecomparenationality
+    """Name: comparenationality
     Compara dos nombres de autor. El primero es una cadena
     y el segundo un entry de un map
     """
@@ -310,8 +315,6 @@ def comparemedio(keymedio,medio):
     else:
         return -1
 
-
-#comparacion requqrimiento 1(pruebaaa)
 def comparefecha(keyfecha,fecha):
     """Name
     Compara dos nombres de autor. El primero es una cadena
@@ -324,6 +327,13 @@ def comparefecha(keyfecha,fecha):
         return 1
     else:
         return -1
+
+
+
+
+
+#comparacion requqrimiento 1(pruebaaa)
+
 
 def cmpA_I(artist1, artist2):
     if artist1 < artist2:

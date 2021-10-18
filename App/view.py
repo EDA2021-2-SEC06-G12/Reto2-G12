@@ -25,7 +25,6 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-from DISClib.ADT import map as mp
 
 
 """
@@ -45,11 +44,7 @@ def printMenu():
     print("6- Clasificar las obras por la nacionalidad de sus creadores")
     print("7- Transportar obras de un departamento")
     print("8- Encontrar los artistas más prolíficos del museo")
-    print("9- Total de obras por una nacionalidad")
     print("0- Salir del Menu")
-
-
-# Funciones de inicializacion
 
 """
 Menu principal
@@ -62,31 +57,20 @@ while True:
         print("Inicializando Catálogo ....")
         cont = controller.initCatalog()
         print("Catálogo Inicializado")
-        
     
     elif int(inputs[0]) == 2:
         print("Cargando información de los archivos ....")
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
-        print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
-        print(mp.keySet(cont['artistNationality']))
-        #print(mp.get(catalog['artistNationality'], 'French'))
-        #print('las nacionalidades son: ' + str(controller.getnationality(cont)))
-        #print('Medios cargados: ' + str(controller.MediumSize(cont)))
-        #print('los medios son: ' + str(controller.getmedio(cont)))
-        #print('Las fechas cargadas son: '+ str(controller.BeginDateSize(cont)))
-        #print('las fechas son: '+ str(controller.getfecha(cont)) )
-        #print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
     
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
         A_FN = input ("Ingresa el año final: ")
         lista = controller.crono_BeginDate(A_I,A_FN,cont)
-        tamaño = lt.size(lista)
-        print ("Se cargaron un total de", tamaño, "Artistas")
-        print ("Los primeros 3 artistas son:" , lista[0],lista[1],lista[2])
-        print ("Los últimos 3 artistas son:" , lista[len(lista)-1],lista[len(lista)-2],lista[len(lista)-3])
+        print ("Se cargaron un total de", "Artistas")
+        print ("Los primeros 3 artistas son:")
+        print ("Los últimos 3 artistas son:")
 
     elif int(inputs[0]) == 4:
         F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ")
