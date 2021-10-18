@@ -23,10 +23,9 @@
 import config as cf
 import sys
 import controller
-import model
 from DISClib.ADT import list as lt
 assert cf
-import time
+from DISClib.ADT import map as mp
 
 
 """
@@ -52,19 +51,6 @@ def printMenu():
 
 # Funciones de inicializacion
 
-def initCatalog():
-    catalog= model.newcatalog()
-    return catalog
-
-
-def loadData(catalog):
-    controller.loadData(catalog)
- 
-catalog= None
-
-
-
-
 """
 Menu principal
 """
@@ -74,20 +60,18 @@ while True:
 
     if int(inputs[0]) == 1:
         print("Inicializando Catálogo ....")
-        catalog = controller.initCatalog()
+        cont = controller.initCatalog()
         print("Catálogo Inicializado")
         
     
     elif int(inputs[0]) == 2:
-        #nacionalidad= input('ingrese la nacionalidad')
         print("Cargando información de los archivos ....")
-        #start_time = time.process_time()
-        controller.loadData(catalog)
-        #stop_time = time.process_time()
-        #elapsed_time_mseg = (stop_time - start_time)*1000
-        print('Artistas cargados: ' + str(controller.artistSize(catalog)))
-        print('Obras de Arte carga1das: ' + str(controller.artworkSize(catalog)))
-        #print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
+        controller.loadData(cont)
+        print('Artistas cargados: ' + str(controller.artistSize(cont)))
+        print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
+        print('Nacionalidades cargadas: ' + str(controller.NationalitySize(cont)))
+        print(mp.keySet(cont['artistNationality']))
+        #print(mp.get(catalog['artistNationality'], 'French'))
         #print('las nacionalidades son: ' + str(controller.getnationality(cont)))
         #print('Medios cargados: ' + str(controller.MediumSize(cont)))
         #print('los medios son: ' + str(controller.getmedio(cont)))
@@ -98,7 +82,7 @@ while True:
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
         A_FN = input ("Ingresa el año final: ")
-        lista = controller.crono_BeginDate(A_I,A_FN,catalog)
+        lista = controller.crono_BeginDate(A_I,A_FN,cont)
         tamaño = lt.size(lista)
         print ("Se cargaron un total de", tamaño, "Artistas")
         print ("Los primeros 3 artistas son:" , lista[0],lista[1],lista[2])
@@ -110,7 +94,7 @@ while True:
 
     elif int(inputs[0]) == 5:
         Name = input ("Ingresa el nombre del artista: ")
-        print('El total de obras y sus primeras y ultimas son:'+ str(controller.clasificacion_medio_t_obra(catalog,Name)))
+        print('El total de obras y sus primeras y ultimas son:'+ str(controller.clasificacion_medio_t_obra(cont,Name)))
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
     
@@ -122,7 +106,7 @@ while True:
     elif int(inputs[0]) == 9:
         nacionalidad= input("ingrese la nacionalidad: ")
         #print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))    
-        print('el total de las obras son: ' + str(controller.T_obras_nacionalidad (nacionalidad,catalog)))
+        print('el total de las obras son: ' + str(controller.T_obras_nacionalidad (nacionalidad,cont)))
     else:
         sys.exit(0)
 sys.exit(0)
