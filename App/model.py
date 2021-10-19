@@ -58,8 +58,8 @@ def newCatalog():
     '''
 
     catalog['artistNationality'] = mp.newMap(2000,
-                                        maptype='PROBING',
-                                        loadfactor=2.0,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
                                         comparefunction=comparenationality)
        
     catalog['id_artista'] = mp.newMap(2000,
@@ -167,7 +167,17 @@ def newname(name):
 
 #Requerimiento 4
 def addNationality(catalog, nacionality, artwork):
-    n_catalog = catalog['artistNationality']
+    nacionalidades = catalog['artistNationality']
+    exist = mp.contains(nacionalidades, nacionality)
+    if not exist:
+        obra = lt.newList('ARRAY_LIST')
+        lt.addFirst(obra, artwork)
+        mp.put(nacionalidades, nacionality, obra)
+    else:
+        entry = mp.get(nacionalidades, nacionality)
+        obra = me.getValue(entry)
+        lt.addLast(obra, artwork)
+    '''n_catalog = catalog['artistNationality']
     exist_n = mp.contains(n_catalog, nacionality)
     if exist_n:
         entry = mp.get(n_catalog, nacionality)
@@ -176,7 +186,7 @@ def addNationality(catalog, nacionality, artwork):
         n_nacional = newnacionalidad(nacionality)
         mp.put(n_catalog, nacionality, n_nacional)
     if lt.isPresent(n_nacional['artwork'], artwork) == 0:
-        lt.addLast(n_nacional['artwork'], artwork)
+        lt.addLast(n_nacional['artwork'], artwork)'''
 
 def newnacionalidad(nacionalidad):
 
