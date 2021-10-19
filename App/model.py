@@ -190,7 +190,7 @@ def newnacionalidad(nacionalidad):
     return nationality
 
 
-#REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
+# REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
 def listar_artist_date(A_I, A_FN, catalog):
     artista = lt.newList('ARRAY_LIST')
     fechas_tot = catalog['BeginDate']
@@ -210,7 +210,7 @@ def listar_artist_date(A_I, A_FN, catalog):
 
     return total, primeros['elements'], ultimos['elements']
 
-#REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
+# REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
 def listar_artwork_date(F_I, F_FN, catalog):
     obra = lt.newList('ARRAY_LIST')
     fechas_tot = catalog['DateAcquired']
@@ -230,8 +230,13 @@ def listar_artwork_date(F_I, F_FN, catalog):
 
     return total, primeros['elements'], ultimos['elements']
 
-# Funciones de consulta
+# REQUERIMIENTO 3 (CLASIFICAR LAS OBRAS DE UN ARTISTA POR TÉCNICA)
 
+
+# REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
+
+# Funciones de consulta
+#¿ELIMINAR?
 def T_obras_nacionalidad (nacionalidad,catalog):
     
     nacionalidades = catalog['artistNationality']
@@ -242,7 +247,9 @@ def T_obras_nacionalidad (nacionalidad,catalog):
         totnacionalidad = lt.size(entrynacionality['artwork'])
         return totnacionalidad
     return 0
-#///////////////////REQUERIMINTO 3///////////////////////////   
+
+#///////////////////REQUERIMINTO 3///////////////////////////
+#¿ELIMINAR?
 def clasificacion_medio_t_obra(catalog,Name):
     c_artisto=catalog['artista_obra']
     existname= mp.contains(c_artisto, Name)
@@ -261,7 +268,6 @@ def clasificacion_medio_t_obra(catalog,Name):
 
 
 #FUNCIONES DE COMPARACIÓN
-
 def compareConstituentID(C1, C2):
     '''
     Función de comparación para la lista de artistas (Carga de Datos)
@@ -323,24 +329,6 @@ def comparefecha(keyfecha,fecha):
     else:
         return -1
 
-def comparefecha_1(D1, D2):
-    '''
-    Función de comparación para la lista de obras (Carga de Datos)
-    '''
-    if (int(D1['BeginDate'])) == int(D2['BeginDate']):
-        return 0
-    elif (int(D1['BeginDate'])) > int(D2['BeginDate']):
-        return 1
-    else:
-        return -1
-
-
-
-
-
-#comparacion requqrimiento 1(pruebaaa)
-
-
 def cmpA_I(artist1, artist2):
     if artist1 < artist2:
         r = True
@@ -348,44 +336,10 @@ def cmpA_I(artist1, artist2):
         r = False 
     return r
 
-def cmpo(o1,o2):
-    if o1 < o2:
-        r = True
-    else:
-        r = False 
-    return r
-
-
-# Funciones de ordenamiento
+#FUNCIONES DE ORDENAMIENTO
 def ordenamiento_artist_AI(catalog):
     sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_I)
     return sorted_list
-
-#funcion de get
-
-def getnationality(catalog, nacionalidad):
-    
-    """
-    Número de Nacionalidades en el catálogo
-    """
-    n=nacionalidad
-    return mp.get(catalog['artistNationality'],n)
-
-def getmedio(catalog):
-    
-    """
-    Número de Nacionalidades en el catálogo
-    """
-    return mp.keySet(catalog['artworkmedium'])
-
-def getfecha(catalog):
-    
-    """
-    Número de Nacionalidades en el catálogo
-    """
-    return mp.keySet(catalog['BeginDate'])
-
-
 
 #FUNCIONES ADICIONALES
 def artistSize(catalog):
