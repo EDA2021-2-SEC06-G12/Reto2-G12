@@ -114,26 +114,26 @@ def addN_fecha(catalog, artista):
 # Carga de Obras de Arte
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
-    lista_ids= artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","")
+    lista_ids = artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","")
     for id_artist in lista_ids.split(","):
-        entry=mp.get(catalog['id_artista'],id_artist)        
-        artista=me.getValue(entry)
-        addNationality(catalog,artista['Nationality'],artwork)
-        addartist_artwork(catalog,artista['DisplayName'], artwork)
+        entry = mp.get(catalog['id_artista'], id_artist)        
+        artista = me.getValue(entry)
+        addNationality(catalog, artista['Nationality'], artwork)
+        addartist_artwork(catalog, artista['DisplayName'], artwork)
 
 #Requerimiento 3
-def addartist_artwork(catalog, name , artwork):  #indice creado 
-    o_catalog= catalog['artista_obra']
-    exist_m=mp.contains(o_catalog,name)
+def addartist_artwork(catalog, name, artwork):  #indice creado 
+    o_catalog = catalog['artista_obra']
+    exist_m = mp.contains(o_catalog, name)
     if exist_m:
-        entry=mp.get(o_catalog,name)
-        name1=me.getValue(entry)   #entrando en el if 
+        entry = mp.get(o_catalog, name)
+        name1 = me.getValue(entry)   #entrando en el if 
     else:
-        name1= newname(name)
-        mp.put(o_catalog,name,name1)
-    if lt.isPresent(name1['artwork'],artwork) == 0:
-        lt.addLast(name1['artwork'],artwork)
-    lt.addLast(name1['artwork'],artwork)
+        name1 = newname(name)
+        mp.put(o_catalog, name, name1)
+    if lt.isPresent(name1['artwork'], artwork) == 0:
+        lt.addLast(name1['artwork'], artwork)
+    lt.addLast(name1['artwork'], artwork)
 
 def newname(name):
     
@@ -147,16 +147,16 @@ def newname(name):
 
 #Requerimiento 4
 def addNationality(catalog, nacionality, artwork):
-    n_catalog=catalog['artistNationality']
-    exist_n=mp.contains(n_catalog,nacionality)
+    n_catalog = catalog['artistNationality']
+    exist_n = mp.contains(n_catalog, nacionality)
     if exist_n:
-        entry=mp.get(n_catalog,nacionality)
-        n_nacional=me.getValue(entry)   #entrando en el if 
+        entry = mp.get(n_catalog, nacionality)
+        n_nacional = me.getValue(entry)   #entrando en el if 
     else:
-        n_nacional= newnacionalidad(nacionality)
-        mp.put(n_catalog,nacionality,n_nacional)
-    if lt.isPresent(n_nacional['artwork'],artwork) == 0:
-        lt.addLast(n_nacional['artwork'],artwork)
+        n_nacional = newnacionalidad(nacionality)
+        mp.put(n_catalog, nacionality, n_nacional)
+    if lt.isPresent(n_nacional['artwork'], artwork) == 0:
+        lt.addLast(n_nacional['artwork'], artwork)
 
 def newnacionalidad(nacionalidad):
 
@@ -173,7 +173,7 @@ def newnacionalidad(nacionalidad):
 #REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
 def listar_artist_date (A_I, A_FN, catalog):
     fechas = catalog['BeginDate']
-    fecha_inicial = me.getValue(mp.get(fechas,A_I))
+    fecha_inicial = me.getValue(mp.get(fechas, A_I))
     fecha_final = mp.get(fechas, A_FN)
     return fechas
 
