@@ -42,8 +42,11 @@ def newCatalog():
 
     catalog = {'artist': None,
                 'artworks': None,
-                'artworkmedium': None,
-                'artistNationality': None}
+                'artistNationality': None,
+                'id_artista': None,
+                'BeginDate': None,
+                'artista_obra': None,
+                'artista_medio': None}
     
     catalog['artist'] = lt.newList('ARRAY_LIST', compareConstituentID)
     catalog['artworks'] = lt.newList('ARRAY_LIST', compareObjectID)
@@ -85,21 +88,28 @@ def newCatalog():
 # Carga de Artistas
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
-    addid_artista(catalog,artist)
-    addN_fecha(catalog,artist)
+    addid_artista(catalog, artist)
+    addN_fecha(catalog, artist)
 
-def addid_artista(catalog,artista):
-    artistas= catalog["id_artista"]
-    exist=mp.contains(artistas,artista['ConstituentID'])
+def addid_artista(catalog, artista):
+    artistas = catalog['id_artista']
+    exist = mp.contains(artistas, artista['ConstituentID'])
     if not exist:
-        mp.put(artistas,artista['ConstituentID'],artista)
+        mp.put(artistas, artista['ConstituentID'], artista)
 
 #Requerimiento 1
 def addN_fecha(catalog, artista):
-    artistas= catalog["BeginDate"]
-    exist=mp.contains(artistas,artista['BeginDate'])
+    fechas = catalog['BeginDate']
+    exist = mp.contains(fechas, artista['BeginDate'])
     if not exist:
-        mp.put(artistas,artista['BeginDate'],artista)
+        artistas = lt.newList('ARRAY_LIST')
+        lt.addFirst(artistas, artista)
+        mp.put(fechas, artista['BeginDate'], artista)
+    else:
+        entry = mp.get(catalog['BeginDate'], artista['BeginDate'])
+        fecha_artista = me.getValue(entry)
+        if artista not in fecha_artista:
+            lt.addLast(fecha_artista, artista)
 
 # Carga de Obras de Arte
 def addArtworks(catalog, artwork):
@@ -160,8 +170,12 @@ def newnacionalidad(nacionalidad):
     return nationality
 
 
-
-# Funciones para creacion de datos
+#REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
+def listar_artist_date (A_I, A_FN, catalog):
+    fechas = catalog['BeginDate']
+    fecha_inicial = me.getValue(mp.get(fechas,A_I))
+    fecha_final = mp.get(fechas, A_FN)
+    return fechas
 
 #///////////////////REQUERIMINTO 3///////////////////////////
 
@@ -229,38 +243,6 @@ def clasificacion_medio_t_obra(catalog,Name):
         return (totobras,sublist3_primeros,sublist3_ultimos)
 
     return None
-#///////////////////////////////////////////////////////////////    
-#def sublista_tobras_artista():  
-
-def artistSize(catalog):
-    """
-    Número de artistas en el catálogo
-    """
-    return lt.size(catalog['artist'])
-
-def artworkSize(catalog):
-    """
-    Número de obras de arte en el catálogo
-    """
-    return lt.size(catalog['artworks'])
-
-def NationalitySize(catalog):
-    """
-    Número de Nacionalidades en el catálogo
-    """
-    return mp.size(catalog['artistNationality'])
-
-def MediumSize(catalog):
-    """
-    Número de Medios en el catálogo
-    """
-    return mp.size(catalog['artworkmedium'])
-
-def BeginDateSize(catalog):
-    """
-    Número de Medios en el catálogo
-    """
-    return mp.size(catalog['BeginDate'])    
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -377,3 +359,18 @@ def getfecha(catalog):
     Número de Nacionalidades en el catálogo
     """
     return mp.keySet(catalog['BeginDate'])
+
+
+
+#FUNCIONES ADICIONALES
+def artistSize(catalog):
+    """
+    Número de artistas en el catálogo
+    """
+    return lt.size(catalog['artist'])
+
+def artworkSize(catalog):
+    """
+    Número de obras de arte en el catálogo
+    """
+    return lt.size(catalog['artworks'])  

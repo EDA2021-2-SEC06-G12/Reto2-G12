@@ -23,9 +23,7 @@
 import config as cf
 import sys
 import controller
-from DISClib.ADT import list as lt
 assert cf
-
 
 """
 La vista se encarga de la interacción con el usuario
@@ -67,7 +65,8 @@ while True:
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
         A_FN = input ("Ingresa el año final: ")
-        lista = controller.crono_BeginDate(A_I,A_FN,cont)
+        lista = controller.listar_artist_date(A_I, A_FN, cont)
+        print(lista)
         print ("Se cargaron un total de", "Artistas")
         print ("Los primeros 3 artistas son:")
         print ("Los últimos 3 artistas son:")
