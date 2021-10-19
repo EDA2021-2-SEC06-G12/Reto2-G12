@@ -101,15 +101,21 @@ def addid_artista(catalog, artista):
 def addN_fecha(catalog, artista):
     fechas = catalog['BeginDate']
     exist = mp.contains(fechas, artista['BeginDate'])
-    if not exist:
-        artistas = lt.newList('ARRAY_LIST')
-        lt.addFirst(artistas, artista)
-        mp.put(fechas, artista['BeginDate'], artista)
-    else:
-        entry = mp.get(catalog['BeginDate'], artista['BeginDate'])
+    if exist:
+        entry = mp.get(fechas, artista['BeginDate'])
         fecha_artista = me.getValue(entry)
-        if artista not in fecha_artista:
-            lt.addLast(fecha_artista, artista)
+    else:
+        fecha_artista = newfecha(artista)
+        mp.put(fechas, artista['BeginDate'], fecha_artista)
+    if lt.isPresent(fecha_artista['artista'], artista) == 0:
+        lt.addLast(fecha_artista['artista'], artista)
+
+def newfecha(artista):
+    artist = {'fecha': "",
+            'artista': None}
+    artist['fecha'] = artista['BeginDate']
+    artist['artista'] = lt.newList('SINGLE_LINKED')
+    return artist
 
 # Carga de Obras de Arte
 def addArtworks(catalog, artwork):
