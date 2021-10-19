@@ -63,10 +63,11 @@ while True:
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
+        #print((cont['BeginDate']))
         #print(mp.size(cont['id_artista']))
         #print(mp.size(cont['artistNationality']))
         #print(mp.get(cont['artistNationality'], 'Israeli'))
-        #print(mp.get(cont['BeginDate'], '1985'))
+        print(mp.get(cont['BeginDate'], '1920'))
         #print(mp.get(cont['artistNationality'], 'American'))
     
     elif int(inputs[0]) == 3:

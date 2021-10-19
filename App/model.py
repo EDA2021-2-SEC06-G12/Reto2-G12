@@ -108,22 +108,14 @@ def addid_artista(catalog, artista):
 def addN_fecha(catalog, date, artista):
     fechas = catalog['BeginDate']
     exist = mp.contains(fechas, date)
-    if exist:
-        entry = mp.get(fechas, date)
-        fecha_artista = me.getValue(entry)
+    if not exist:
+        artist = lt.newList('ARRAY_LIST')
+        lt.addFirst(artist, artista)
+        mp.put(fechas, date, artist)
     else:
-        fecha_artista = newfecha(date)
-        mp.put(fechas, date, fecha_artista)
-        
-    if lt.isPresent(fecha_artista['artista'], artista) == 0:
-        lt.addLast(fecha_artista['artista'], artista)
-
-def newfecha(date):
-    artist = {'fecha': "",
-            'artista': None}
-    artist['fecha'] = date
-    artist['artista'] = lt.newList('ARRAY_LIST', comparefecha_1)
-    return artist
+        entry = mp.get(fechas, date)
+        artist = me.getValue(entry)
+        lt.addLast(artist, artista)
 
 # Carga de Obras de Arte
 def addArtworks(catalog, artwork):
@@ -186,7 +178,15 @@ def newnacionalidad(nacionalidad):
 
 #REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
 def listar_artist_date (A_I, A_FN, catalog):
-    lst = lt.newList('ARRAY_LIST')
+    fechas = catalog['BeginDate']
+    fecha = mp.keySet(fechas)
+    return fecha
+
+
+
+
+
+    '''lst = lt.newList('ARRAY_LIST')
     lf = lt.newList('ARRAY_LIST')
     catalog_2 = catalog['artist']['elements']
     for artista in catalog_2:
@@ -203,7 +203,7 @@ def listar_artist_date (A_I, A_FN, catalog):
             entry_value = me.getValue(entry)
             lt.addLast(lf, entry_value)
 
-    return orden, lf
+    return orden, lf'''
 
 # Funciones de consulta
 
