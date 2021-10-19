@@ -66,3 +66,8 @@ def artworkSize(catalog):
 def listar_artist_date(A_I, A_FN, cont):
     Algoritmo = model.listar_artist_date (A_I, A_FN, cont)
     return Algoritmo
+
+#REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
+def listar_artwork_date(F_I, F_FN, cont):
+    Algoritmo = model.listar_artwork_date(F_I, F_FN, cont)
+    return Algoritmo

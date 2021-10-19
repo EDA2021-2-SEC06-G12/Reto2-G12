@@ -120,12 +120,26 @@ def addN_fecha(catalog, date, artista):
 # Carga de Obras de Arte
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
+    addDateAcquired(catalog, artwork['DateAcquired'], artwork)
     lista_ids = artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","").split(",")
     for id_artist in lista_ids:
         entry = mp.get(catalog['id_artista'], id_artist)        
         artista = me.getValue(entry)
         addNationality(catalog, artista['Nationality'], artwork)
         addartist_artwork(catalog, artista['DisplayName'], artwork)
+
+#Requerimiento 2
+def addDateAcquired(catalog, dateacquired, artwork):
+    fechas = catalog['DateAcquired']
+    exist = mp.contains(fechas, dateacquired)
+    if not exist:
+        obra = lt.newList('ARRAY_LIST')
+        lt.addFirst(obra, artwork)
+        mp.put(fechas, dateacquired, obra)
+    else:
+        entry = mp.get(fechas, dateacquired)
+        artist = me.getValue(entry)
+        lt.addLast(artist, artwork)
 
 #Requerimiento 3
 def addartist_artwork(catalog, name, artwork):  #indice creado 
@@ -177,33 +191,44 @@ def newnacionalidad(nacionalidad):
 
 
 #REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
-def listar_artist_date (A_I, A_FN, catalog):
-    fechas = catalog['BeginDate']
-    fecha = mp.keySet(fechas)
-    return fecha
-
-
-
-
-
-    '''lst = lt.newList('ARRAY_LIST')
-    lf = lt.newList('ARRAY_LIST')
-    catalog_2 = catalog['artist']['elements']
-    for artista in catalog_2:
-        fecha = artista['BeginDate']
+def listar_artist_date(A_I, A_FN, catalog):
+    artista = lt.newList('ARRAY_LIST')
+    fechas_tot = catalog['BeginDate']
+    fechas = mp.keySet(fechas_tot)
+    orden = ordenamiento_artist_AI(fechas)
+    for fecha in lt.iterator(orden):
         if (fecha >= A_I) and (fecha <= A_FN):
-            lt.addLast(lst, fecha)
-    
-    orden = ordenamiento_artist_AI(lst)
+            entry = mp.get(fechas_tot, fecha)
+            valor = me.getValue(entry)
+            for artist in valor['elements']:
+                lt.addLast(artista, artist)
 
-    for date in orden:
-        exist = mp.contains(catalog['BeginDate'], date)
-        if exist:
-            entry = mp.get(catalog['BeginDate'], date)
-            entry_value = me.getValue(entry)
-            lt.addLast(lf, entry_value)
+    total = lt.size(artista)
 
-    return orden, lf'''
+    primeros = lt.subList(artista, 1, 3)
+    ultimos = lt.subList(artista, lt.size(artista) - 2, 3)
+
+    return total, primeros['elements'], ultimos['elements']
+
+#REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
+def listar_artwork_date(F_I, F_FN, catalog):
+    obra = lt.newList('ARRAY_LIST')
+    fechas_tot = catalog['DateAcquired']
+    fechas = mp.keySet(fechas_tot)
+    orden = ordenamiento_artist_AI(fechas)
+    for fecha in lt.iterator(orden):
+        if (fecha >= F_I) and (fecha <= F_FN):
+            entry = mp.get(fechas_tot, fecha)
+            valor = me.getValue(entry)
+            for obr in valor['elements']:
+                lt.addLast(obra, obr)
+
+    total = lt.size(obra)
+
+    primeros = lt.subList(obra, 1, 3)
+    ultimos = lt.subList(obra, lt.size(obra) - 2, 3)
+
+    return total, primeros['elements'], ultimos['elements']
 
 # Funciones de consulta
 

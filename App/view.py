@@ -65,23 +65,26 @@ while True:
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
         #print((cont['BeginDate']))
         #print(mp.size(cont['id_artista']))
-        #print(mp.size(cont['artistNationality']))
+        #print(mp.size(cont['DateAcquired']))
         #print(mp.get(cont['artistNationality'], 'Israeli'))
-        print(mp.get(cont['BeginDate'], '1920'))
+        #print(mp.get(cont['BeginDate'], '1920'))
         #print(mp.get(cont['artistNationality'], 'American'))
     
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
         A_FN = input ("Ingresa el año final: ")
         lista = controller.listar_artist_date(A_I, A_FN, cont)
-        print(lista)
-        print ("Se cargaron un total de", "Artistas")
-        print ("Los primeros 3 artistas son:")
-        print ("Los últimos 3 artistas son:")
+        print ("Se cargaron un total de", lista[0], "Artistas")
+        print ("Los primeros 3 artistas son:", lista[1])
+        print ("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 4:
         F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ")
         F_FN = input ("Ingresa la fecha final (AAAA-MM-DD): ")
+        lista = controller.listar_artwork_date(F_I, F_FN, cont)
+        print ("Se cargaron un total de", lista[0], "Obras")
+        print ("Los primeros 3 artistas son:", lista[1])
+        print ("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 5:
         Name = input ("Ingresa el nombre del artista: ")
