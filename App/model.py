@@ -29,6 +29,7 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
+from DISClib.Algorithms.Sorting import mergesort as mrgs
 assert cf
 
 """
@@ -45,6 +46,7 @@ def newCatalog():
                 'artistNationality': None,
                 'id_artista': None,
                 'BeginDate': None,
+                'DateAcquired': None,
                 'artista_obra': None,
                 'artista_medio': None}
     
@@ -61,14 +63,19 @@ def newCatalog():
                                         comparefunction=comparenationality)
        
     catalog['id_artista'] = mp.newMap(2000,
-                                        maptype='PROBING',
-                                        loadfactor=2.0,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
                                         comparefunction=comparemedio)                                    
 
     catalog['BeginDate']  = mp.newMap(2000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
-                                        comparefunction=comparefecha)   
+                                        comparefunction=comparefecha)
+
+    catalog['DateAcquired'] = mp.newMap(2000,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
+                                        comparefunction=comparefecha)
 
     catalog['artista_obra'] = mp.newMap(2000,
                                         maptype='PROBING',
@@ -89,7 +96,7 @@ def newCatalog():
 def addArtist(catalog, artist):
     lt.addLast(catalog['artist'], artist)
     addid_artista(catalog, artist)
-    addN_fecha(catalog, artist)
+    addN_fecha(catalog, artist['BeginDate'], artist)
 
 def addid_artista(catalog, artista):
     artistas = catalog['id_artista']
@@ -98,30 +105,31 @@ def addid_artista(catalog, artista):
         mp.put(artistas, artista['ConstituentID'], artista)
 
 #Requerimiento 1
-def addN_fecha(catalog, artista):
+def addN_fecha(catalog, date, artista):
     fechas = catalog['BeginDate']
-    exist = mp.contains(fechas, artista['BeginDate'])
+    exist = mp.contains(fechas, date)
     if exist:
-        entry = mp.get(fechas, artista['BeginDate'])
+        entry = mp.get(fechas, date)
         fecha_artista = me.getValue(entry)
     else:
-        fecha_artista = newfecha(artista)
-        mp.put(fechas, artista['BeginDate'], fecha_artista)
+        fecha_artista = newfecha(date)
+        mp.put(fechas, date, fecha_artista)
+        
     if lt.isPresent(fecha_artista['artista'], artista) == 0:
         lt.addLast(fecha_artista['artista'], artista)
 
-def newfecha(artista):
+def newfecha(date):
     artist = {'fecha': "",
             'artista': None}
-    artist['fecha'] = artista['BeginDate']
-    artist['artista'] = lt.newList('SINGLE_LINKED')
+    artist['fecha'] = date
+    artist['artista'] = lt.newList('ARRAY_LIST', comparefecha_1)
     return artist
 
 # Carga de Obras de Arte
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
-    lista_ids = artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","")
-    for id_artist in lista_ids.split(","):
+    lista_ids = artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","").split(",")
+    for id_artist in lista_ids:
         entry = mp.get(catalog['id_artista'], id_artist)        
         artista = me.getValue(entry)
         addNationality(catalog, artista['Nationality'], artwork)
@@ -178,52 +186,26 @@ def newnacionalidad(nacionalidad):
 
 #REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
 def listar_artist_date (A_I, A_FN, catalog):
-    fechas = catalog['BeginDate']
-    fecha_inicial = me.getValue(mp.get(fechas, A_I))
-    fecha_final = mp.get(fechas, A_FN)
-    return fechas
-
-#///////////////////REQUERIMINTO 3///////////////////////////
-
-#////////////////////////////////////////////////////////////
-def newobra_artist(medio):
+    lst = lt.newList('ARRAY_LIST')
+    lf = lt.newList('ARRAY_LIST')
+    catalog_2 = catalog['artist']['elements']
+    for artista in catalog_2:
+        fecha = artista['BeginDate']
+        if (fecha >= A_I) and (fecha <= A_FN):
+            lt.addLast(lst, fecha)
     
-    medium = {'Medium': "",
-              "artwork": None,
-              }
-    medium['Medium'] = medio
-    medium['artwork'] = lt.newList('SINGLE_LINKED', comparemedio)
+    orden = ordenamiento_artist_AI(lst)
 
-    return medium
+    for date in orden:
+        exist = mp.contains(catalog['BeginDate'], date)
+        if exist:
+            entry = mp.get(catalog['BeginDate'], date)
+            entry_value = me.getValue(entry)
+            lt.addLast(lf, entry_value)
+
+    return orden, lf
+
 # Funciones de consulta
-#    REQUERIMIENTO 1(PRUEBA)
-def CRONO (A_I, A_FN,catalog):
-    lst_fecha = lt.newList('ARRAY_LIST')
-
-    fechas_llave= mp.keySet(catalog['BeginDate'])
-    name_value= mp.valueSet(catalog['BeginDate'])
-    for fecha in fechas_llave:
-        if (fecha >= A_I) and (fecha <= A_FN):
-            for artist in catalog["artist"]["elements"]:
-                for name in name_value:
-                    if name in artist["DisplayName"]:
-                        datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
-                        lt.addLast(lst_fecha , datos_artist)
-
-    return lst_fecha
-
-def crono_BeginDate(A_I, A_FN,catalog):
-    lst_fecha = lt.newList('ARRAY_LIST')
-    fechas_llave = getfecha(catalog)
-    orden = ordenamiento_Ndate(fechas_llave)
-    for fecha in orden:
-        if (fecha >= A_I) and (fecha <= A_FN):
-            name= mp.get(catalog['BeginDate'], fecha)
-            for artist in catalog["artist"]["elements"]:
-                if name in artist["DisplayName"]:
-                        datos_artist = [artist['DisplayName'], artist['BeginDate'], artist['EndDate'], artist['Nationality'], artist['Gender']]
-                        lt.addLast(lst_fecha, datos_artist)
-    return lst_fecha
 
 def T_obras_nacionalidad (nacionalidad,catalog):
     
@@ -316,6 +298,17 @@ def comparefecha(keyfecha,fecha):
     else:
         return -1
 
+def comparefecha_1(D1, D2):
+    '''
+    Función de comparación para la lista de obras (Carga de Datos)
+    '''
+    if (int(D1['BeginDate'])) == int(D2['BeginDate']):
+        return 0
+    elif (int(D1['BeginDate'])) > int(D2['BeginDate']):
+        return 1
+    else:
+        return -1
+
 
 
 
@@ -329,6 +322,7 @@ def cmpA_I(artist1, artist2):
     else:
         r = False 
     return r
+
 def cmpo(o1,o2):
     if o1 < o2:
         r = True
@@ -338,7 +332,7 @@ def cmpo(o1,o2):
 
 
 # Funciones de ordenamiento
-def ordenamiento_Ndate(catalog):
+def ordenamiento_artist_AI(catalog):
     sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_I)
     return sorted_list
 

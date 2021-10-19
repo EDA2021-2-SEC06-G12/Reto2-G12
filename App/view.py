@@ -24,6 +24,8 @@ import config as cf
 import sys
 import controller
 assert cf
+from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapentry as me
 
 """
 La vista se encarga de la interacción con el usuario
@@ -61,6 +63,11 @@ while True:
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
+        #print(mp.size(cont['id_artista']))
+        #print(mp.size(cont['artistNationality']))
+        #print(mp.get(cont['artistNationality'], 'Israeli'))
+        #print(mp.get(cont['BeginDate'], '1985'))
+        #print(mp.get(cont['artistNationality'], 'American'))
     
     elif int(inputs[0]) == 3:
         A_I = input ("Ingresa el año inicial: ")
