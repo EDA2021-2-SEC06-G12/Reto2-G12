@@ -76,6 +76,11 @@ def newCatalog():
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparefecha)
+    
+    catalog['Department'] = mp.newMap(2000,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
+                                        comparefunction=comparefecha)
 
     catalog['artista_obra'] = mp.newMap(2000,
                                         maptype='PROBING',
@@ -121,6 +126,7 @@ def addN_fecha(catalog, date, artista):
 def addArtworks(catalog, artwork):
     lt.addLast(catalog['artworks'], artwork)
     addDateAcquired(catalog, artwork['DateAcquired'], artwork)
+    addDepartment(catalog, artwork['Department'], artwork)
     lista_ids = artwork['ConstituentID'].replace(" ","").replace("[","").replace("]","").split(",")
     for id_artist in lista_ids:
         entry = mp.get(catalog['id_artista'], id_artist)        
@@ -177,28 +183,19 @@ def addNationality(catalog, nacionality, artwork):
         entry = mp.get(nacionalidades, nacionality)
         obra = me.getValue(entry)
         lt.addLast(obra, artwork)
-    '''n_catalog = catalog['artistNationality']
-    exist_n = mp.contains(n_catalog, nacionality)
-    if exist_n:
-        entry = mp.get(n_catalog, nacionality)
-        n_nacional = me.getValue(entry)   #entrando en el if 
+
+#Requerimiento 5
+def addDepartment(catalog, department, artwork):
+    departamentos = catalog['Department']
+    exist = mp.contains(departamentos, department)
+    if not exist:
+        obra = lt.newList('ARRAY_LIST')
+        lt.addFirst(obra, artwork)
+        mp.put(departamentos, department, obra)
     else:
-        n_nacional = newnacionalidad(nacionality)
-        mp.put(n_catalog, nacionality, n_nacional)
-    if lt.isPresent(n_nacional['artwork'], artwork) == 0:
-        lt.addLast(n_nacional['artwork'], artwork)'''
-
-def newnacionalidad(nacionalidad):
-
-    nationality = {'Nationality': "",
-              "artwork": None,
-              }
-
-    nationality['Nationality'] = nacionalidad
-    nationality['artwork'] = lt.newList('SINGLE_LINKED', compareObjectID)
-
-    return nationality
-
+        entry = mp.get(departamentos, department)
+        artist = me.getValue(entry)
+        lt.addLast(artist, artwork)
 
 # REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
 def listar_artist_date(A_I, A_FN, catalog):
@@ -222,6 +219,7 @@ def listar_artist_date(A_I, A_FN, catalog):
 
 # REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
 def listar_artwork_date(F_I, F_FN, catalog):
+    contador = 0
     obra = lt.newList('ARRAY_LIST')
     fechas_tot = catalog['DateAcquired']
     fechas = mp.keySet(fechas_tot)
@@ -238,14 +236,48 @@ def listar_artwork_date(F_I, F_FN, catalog):
     primeros = lt.subList(obra, 1, 3)
     ultimos = lt.subList(obra, lt.size(obra) - 2, 3)
 
-    return total, primeros['elements'], ultimos['elements']
+    for obr in lt.iterator(obra):
+        if 'Purchase' in obr['CreditLine'] or 'purchase' in obr['CreditLine']:
+            contador += 1
+
+    return total, primeros['elements'], ultimos['elements'], contador
 
 # REQUERIMIENTO 3 (CLASIFICAR LAS OBRAS DE UN ARTISTA POR TÉCNICA)
 
 
 # REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
+def Obras_Nacionalidad(catalog):
+    cuantos = 0
+    valores = lt.newList('ARRAY_LIST')
+    nacionalidades = catalog['artistNationality']
+    cada_una = mp.keySet(nacionalidades)
+    for nacionalidad in lt.iterator(cada_una):
+        if nacionalidad == '' or nacionalidad == 'Nationality unknown':
+            entry = mp.get(nacionalidades, nacionalidad)
+            valor = me.getValue(entry)['size']
+            cuantos += valor
+            dic = (cuantos, 'Nationality unknown')
+        else:
+            entry = mp.get(nacionalidades, nacionalidad)
+            valor = me.getValue(entry)['size']
+            dic = (valor, nacionalidad)
 
-#
+        lt.addLast(valores, dic)
+
+    orden = ordenamiento(valores)
+    mayores = lt.subList(orden, 1, 10)
+
+    primeros = mp.get(nacionalidades, lt.getElement(mayores, 1)[1])
+    primeros_3 = lt.subList(me.getValue(primeros), 1, 3)
+    ultimas = lt.subList(me.getValue(primeros), lt.size(me.getValue(primeros)) - 2, 3)
+
+    return mayores['elements'], primeros_3['elements'], ultimas['elements']
+
+# REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
+def Costo_departamento(department, catalog):
+    departamentos = catalog['Department']
+    departamento = mp.get(departamentos, department)
+
 
 # Funciones de consulta
 #¿ELIMINAR?
@@ -348,9 +380,20 @@ def cmpA_I(artist1, artist2):
         r = False 
     return r
 
+def cmpA_IN(artist1, artist2):
+    if artist1 > artist2:
+        r = True
+    else:
+        r = False 
+    return r
+
 #FUNCIONES DE ORDENAMIENTO
 def ordenamiento_artist_AI(catalog):
     sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_I)
+    return sorted_list
+
+def ordenamiento(catalog):
+    sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_IN)
     return sorted_list
 
 #FUNCIONES ADICIONALES

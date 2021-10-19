@@ -62,12 +62,25 @@ def artworkSize(catalog):
     """
     return model.artworkSize(catalog)
 
-#REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
+# REQUERIMIENTO 1 (LISTAR CRONOLÓGICAMENTE LOS ARTISTAS)
 def listar_artist_date(A_I, A_FN, cont):
     Algoritmo = model.listar_artist_date (A_I, A_FN, cont)
     return Algoritmo
 
-#REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
+# REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
 def listar_artwork_date(F_I, F_FN, cont):
     Algoritmo = model.listar_artwork_date(F_I, F_FN, cont)
+    return Algoritmo
+
+# REQUERIMIENTO 3 (CLASIFICAR LAS OBRAS DE UN ARTISTA POR TÉCNICA)
+
+
+# REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
+def Obras_Nacionalidad(cont):
+    Algoritmo = model.Obras_Nacionalidad(cont)
+    return Algoritmo
+
+# REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
+def Costo_departamento(department, cont):
+    Algoritmo = model.Costo_departamento(department, cont)
     return Algoritmo

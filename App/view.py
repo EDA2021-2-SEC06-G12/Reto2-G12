@@ -63,10 +63,11 @@ while True:
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
-        print((cont['artistNationality']))
+        #print((cont['Department']))
         #print(mp.size(cont['id_artista']))
-        print(mp.size(cont['artistNationality']))
-        #print(mp.get(cont['artistNationality'], 'Israeli'))
+        #print(mp.size(cont['artistNationality']))
+        #print(mp.get(cont['artistNationality'], 'American'))
+        #print(me.getValue(mp.get(cont['artistNationality'], 'American'))['size'])
         #print(mp.get(cont['BeginDate'], '1920'))
         #print(mp.get(cont['artistNationality'], 'American'))
     
@@ -82,25 +83,30 @@ while True:
         F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ")
         F_FN = input ("Ingresa la fecha final (AAAA-MM-DD): ")
         lista = controller.listar_artwork_date(F_I, F_FN, cont)
-        print ("Se cargaron un total de", lista[0], "Obras")
+        print ("Se cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.")
         print ("Los primeros 3 artistas son:", lista[1])
         print ("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 5:
         Name = input ("Ingresa el nombre del artista: ")
-        print('El total de obras y sus primeras y ultimas son:'+ str(controller.clasificacion_medio_t_obra(cont,Name)))
+        print("El total de obras y sus primeras y ultimas son:", str(controller.clasificacion_medio_t_obra(cont,Name)))
+
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
+        lista = controller.Obras_Nacionalidad(cont)
+        print("El top 10 de nacionalidades son:", lista[0])
+        print("Las primeras 3 obras dentro de la mayor nacionalidad son:", lista[1])
+        print("Las últimas 3 obras dentro de la mayor nacionalidad son:", lista[2])
     
     elif int(inputs[0]) == 7:
         print("Transportar obras de un departamento: ")
+        department = input ("Ingresa el nombre del departamento a buscar: ")
+        lista = controller.Costo_departamento(department, cont)
+        
     
     elif int(inputs[0]) == 8:
         print("Encontrar los artistas más prolíficos del museo: ")
-    elif int(inputs[0]) == 9:
-        nacionalidad= input("ingrese la nacionalidad: ")
-        #print('El total de obras de esa nacionalidad es : ' + str(controller.T_obras_nacionalidad(nacionalidad,catalog)))    
-        print('el total de las obras son: ' + str(controller.T_obras_nacionalidad (nacionalidad,cont)))
+
     else:
         sys.exit(0)
 sys.exit(0)
