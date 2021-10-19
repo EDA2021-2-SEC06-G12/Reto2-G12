@@ -47,8 +47,7 @@ def newCatalog():
                 'id_artista': None,
                 'BeginDate': None,
                 'DateAcquired': None,
-                'artista_obra': None,
-                'artista_medio': None}
+                'artista_obra': None}
     
     catalog['artist'] = lt.newList('ARRAY_LIST', compareConstituentID)
     catalog['artworks'] = lt.newList('ARRAY_LIST', compareObjectID)
@@ -57,41 +56,35 @@ def newCatalog():
     Este indice crea un map cuya llave es el medio de una obra
     '''
 
-    catalog['artistNationality'] = mp.newMap(2000,
+    catalog['artistNationality'] = mp.newMap(20000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparenationality)
        
-    catalog['id_artista'] = mp.newMap(2000,
+    catalog['id_artista'] = mp.newMap(20000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparemedio)                                    
 
-    catalog['BeginDate']  = mp.newMap(2000,
+    catalog['BeginDate']  = mp.newMap(20000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparefecha)
 
-    catalog['DateAcquired'] = mp.newMap(2000,
+    catalog['DateAcquired'] = mp.newMap(20000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparefecha)
     
-    catalog['Department'] = mp.newMap(2000,
+    catalog['Department'] = mp.newMap(20000,
                                         maptype='CHAINING',
                                         loadfactor=4.0,
                                         comparefunction=comparefecha)
 
-    catalog['artista_obra'] = mp.newMap(2000,
-                                        maptype='PROBING',
-                                        loadfactor=2.0,
-                                        comparefunction=comparemedio)  
-
-    catalog['artista_medio'] = mp.newMap(2000,
-                                        maptype='PROBING',
-                                        loadfactor=2.0,
+    catalog['artista_obra'] = mp.newMap(20000,
+                                        maptype='CHAINING',
+                                        loadfactor=4.0,
                                         comparefunction=comparemedio)
-    
 
     return catalog
 
@@ -148,28 +141,17 @@ def addDateAcquired(catalog, dateacquired, artwork):
         lt.addLast(artist, artwork)
 
 #Requerimiento 3
-def addartist_artwork(catalog, name, artwork):  #indice creado 
-    o_catalog = catalog['artista_obra']
-    exist_m = mp.contains(o_catalog, name)
-    if exist_m:
-        entry = mp.get(o_catalog, name)
-        name1 = me.getValue(entry)   #entrando en el if 
+def addartist_artwork(catalog, name, artwork):
+    artistas = catalog['artista_obra']
+    exist = mp.contains(artistas, name)
+    if not exist:
+        obra = lt.newList('ARRAY_LIST')
+        lt.addFirst(obra, artwork)
+        mp.put(artistas, name, obra)
     else:
-        name1 = newname(name)
-        mp.put(o_catalog, name, name1)
-    if lt.isPresent(name1['artwork'], artwork) == 0:
-        lt.addLast(name1['artwork'], artwork)
-    lt.addLast(name1['artwork'], artwork)
-
-def newname(name):
-    
-    name = {'name': "",
-              "artwork": None,
-              }
-    name['name'] = name
-    name['artwork'] = lt.newList('SINGLE_LINKED', compareObjectID)
-
-    return name
+        entry = mp.get(artistas, name)
+        obra = me.getValue(entry)
+        lt.addLast(obra, artwork)
 
 #Requerimiento 4
 def addNationality(catalog, nacionality, artwork):
@@ -243,7 +225,23 @@ def listar_artwork_date(F_I, F_FN, catalog):
     return total, primeros['elements'], ultimos['elements'], contador
 
 # REQUERIMIENTO 3 (CLASIFICAR LAS OBRAS DE UN ARTISTA POR TÉCNICA)
-
+def clasificacion_medio_t_obra(Name, catalog):
+    todos = lt.newList('ARRAY_LIST')
+    medios = lt.newList('ARRAY_LIST')
+    artistas = catalog['artista_obra']
+    artista = mp.get(artistas, Name)
+    obras_artista = me.getValue(artista)
+    for obras in lt.iterator(obras_artista):
+        medio = obras['Medium']
+        lt.addFirst(medios, medio)
+    for obra_medio in lt.iterator(medios):
+        for medio_obra in lt.iterator(medios):
+            if obra_medio == medio_obra:
+                contador = 0
+                contador += 1
+            tupla = medio_obra, contador
+            lt.addFirst(todos,tupla)
+    return todos
 
 # REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
 def Obras_Nacionalidad(catalog):
@@ -275,41 +273,13 @@ def Obras_Nacionalidad(catalog):
 
 # REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
 def Costo_departamento(department, catalog):
+    costo = 0
     departamentos = catalog['Department']
     departamento = mp.get(departamentos, department)
-
-
-# Funciones de consulta
-#¿ELIMINAR?
-def T_obras_nacionalidad (nacionalidad,catalog):
-    
-    nacionalidades = catalog['artistNationality']
-    existnacionality = mp.contains(nacionalidades, nacionalidad)
-    if existnacionality:
-        entry = mp.get(nacionalidades, nacionalidad)
-        entrynacionality = me.getValue(entry)
-        totnacionalidad = lt.size(entrynacionality['artwork'])
-        return totnacionalidad
-    return 0
-
-#///////////////////REQUERIMINTO 3///////////////////////////
-#¿ELIMINAR?
-def clasificacion_medio_t_obra(catalog,Name):
-    c_artisto=catalog['artista_obra']
-    existname= mp.contains(c_artisto, Name)
-    if existname:
-        entry = mp.get(c_artisto, Name)
-        entryname = me.getValue(entry)
-        totobras = lt.size(entryname['artwork'])
-        sublist3_primeros= lt.subList(entryname['artwork'],1,3)
-        sublist3_ultimos= lt.subList(entryname['artwork'],totobras-3,3)
-
-        return (totobras,sublist3_primeros,sublist3_ultimos)
-
-    return None
-
-# Funciones utilizadas para comparar elementos dentro de una lista
-
+    obras = me.getValue(departamento)
+    for obra in lt.iterator(obras):
+        if obra['Dimensions'] == '':
+            costo += 48
 
 #FUNCIONES DE COMPARACIÓN
 def compareConstituentID(C1, C2):

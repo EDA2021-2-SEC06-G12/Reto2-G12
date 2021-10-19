@@ -63,10 +63,10 @@ while True:
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
-        #print((cont['Department']))
+        #print((cont['artista_obra']))
         #print(mp.size(cont['id_artista']))
         #print(mp.size(cont['artistNationality']))
-        #print(mp.get(cont['artistNationality'], 'American'))
+        print(mp.get(cont['artista_obra'], 'Louise Bourgeois'))
         #print(me.getValue(mp.get(cont['artistNationality'], 'American'))['size'])
         #print(mp.get(cont['BeginDate'], '1920'))
         #print(mp.get(cont['artistNationality'], 'American'))
@@ -89,7 +89,11 @@ while True:
 
     elif int(inputs[0]) == 5:
         Name = input ("Ingresa el nombre del artista: ")
-        print("El total de obras y sus primeras y ultimas son:", str(controller.clasificacion_medio_t_obra(cont,Name)))
+        print("Obras de un artista por técnica: ")
+        lista = controller.clasificacion_medio_t_obra(Name, cont)
+        #print("El total de obras y sus primeras y ultimas son:", str(controller.clasificacion_medio_t_obra(Name, cont)))
+        print(lista)
+        #Louise Bourgeois
 
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")

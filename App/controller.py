@@ -73,7 +73,9 @@ def listar_artwork_date(F_I, F_FN, cont):
     return Algoritmo
 
 # REQUERIMIENTO 3 (CLASIFICAR LAS OBRAS DE UN ARTISTA POR TÉCNICA)
-
+def clasificacion_medio_t_obra(Name, cont):
+    Algoritmo = model.clasificacion_medio_t_obra(Name, cont)
+    return Algoritmo
 
 # REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
 def Obras_Nacionalidad(cont):
