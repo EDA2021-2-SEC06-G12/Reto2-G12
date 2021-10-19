@@ -245,7 +245,7 @@ def listar_artwork_date(F_I, F_FN, catalog):
 
 # REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
 
-
+#
 
 # Funciones de consulta
 #¿ELIMINAR?
