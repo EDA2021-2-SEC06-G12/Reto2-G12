@@ -24,8 +24,6 @@ import config as cf
 import sys
 import controller
 assert cf
-from DISClib.ADT import map as mp
-from DISClib.DataStructures import mapentry as me
 from DISClib.ADT import list as lt
 
 """
@@ -34,25 +32,8 @@ Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
+
 def req3_3ultimos_primeros(lst):
-    """sublistu=lt.subList(lst,-3,3)
-    sublistp=lt.subList(lst,1,3)
-    if lt.size(lst) >= 6:
-        for obra in lt.iterator(sublistp):
-            print (" ")
-            print("Titulo: ", obra["Title"])
-            print("Fecha: ", obra["Date"])
-            print("Medio: ", obra["Medium"])
-            print("Dimensiones: ", obra["Dimensions"])
-        
-        for obra in lt.iterator(sublistu):
-            print (" ")
-            print("Titulo: ", obra["Title"])
-            print("Fecha: ", obra["Date"])
-            print("Medio: ", obra["Medium"])
-            print("Dimensiones: ", obra["Dimensions"])
-        print (" ")
-    else:"""
     for obra in lt.iterator(lst):
         print (" ")
         print("Titulo: ", obra["Title"])
@@ -90,43 +71,32 @@ while True:
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
-        #print((cont['artista_obra']))
-        #print(mp.size(cont['id_artista']))
-        #print(mp.size(cont['artistNationality']))
-        #print(mp.get(cont['artista_obra'], 'Louise Bourgeois'))
-        #print(me.getValue(mp.get(cont['artistNationality'], 'American'))['size'])
-        #print(mp.get(cont['BeginDate'], '1920'))
-        #print(mp.get(cont['artistNationality'], 'American'))
     
     elif int(inputs[0]) == 3:
-        A_I = input ("Ingresa el año inicial: ")
-        A_FN = input ("Ingresa el año final: ")
+        A_I = input ("Ingresa el año inicial: ") #1920
+        A_FN = input ("Ingresa el año final: ") #1985
         lista = controller.listar_artist_date(A_I, A_FN, cont)
         print ("Se cargaron un total de", lista[0], "Artistas")
         print ("Los primeros 3 artistas son:", lista[1])
         print ("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 4:
-        F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ")
-        F_FN = input ("Ingresa la fecha final (AAAA-MM-DD): ")
+        F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ") #1944-06-06
+        F_FN = input ("Ingresa la fecha final (AAAA-MM-DD): ") #1989-11-09
         lista = controller.listar_artwork_date(F_I, F_FN, cont)
         print ("Se cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.")
         print ("Los primeros 3 artistas son:", lista[1])
         print ("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 5:
-        Name = input ("Ingresa el nombre del artista: ")
+        Name = input ("Ingresa el nombre del artista: ") #Louise Bourgeois
         t_obras,t_medio, tecnica_mayor, lst_tecnicamayor= controller.clasificacion_medio_t_obra(Name, cont)
-
         print ("el total de obras es: " + str(t_obras))
         print ("el total de tecnicas es: " + str(t_medio))
         print ("el nombre de la tecnica mas usada es: " + str(tecnica_mayor))
         print ("el total de obras es: " + str(t_obras))
         print ("las primeras y ultimas son: " )
         req3_3ultimos_primeros(lst_tecnicamayor)
-        #print("El total de obras y sus primeras y ultimas son:", str(controller.clasificacion_medio_t_obra(Name, cont)))
-
-        #Louise Bourgeois
         
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
@@ -137,7 +107,7 @@ while True:
     
     elif int(inputs[0]) == 7:
         print("Transportar obras de un departamento: ")
-        department = input ("Ingresa el nombre del departamento a buscar: ")
+        department = input ("Ingresa el nombre del departamento a buscar: ") #Drawings & Prints
         lista = controller.Costo_departamento(department, cont)
         print(lista)
         
