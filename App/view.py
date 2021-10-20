@@ -66,7 +66,7 @@ while True:
         #print((cont['artista_obra']))
         #print(mp.size(cont['id_artista']))
         #print(mp.size(cont['artistNationality']))
-        print(mp.get(cont['artista_obra'], 'Louise Bourgeois'))
+        #print(mp.get(cont['artista_obra'], 'Louise Bourgeois'))
         #print(me.getValue(mp.get(cont['artistNationality'], 'American'))['size'])
         #print(mp.get(cont['BeginDate'], '1920'))
         #print(mp.get(cont['artistNationality'], 'American'))
@@ -106,6 +106,7 @@ while True:
         print("Transportar obras de un departamento: ")
         department = input ("Ingresa el nombre del departamento a buscar: ")
         lista = controller.Costo_departamento(department, cont)
+        print(lista)
         
     
     elif int(inputs[0]) == 8:

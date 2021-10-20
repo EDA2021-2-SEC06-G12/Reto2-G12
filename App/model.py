@@ -278,8 +278,58 @@ def Costo_departamento(department, catalog):
     departamento = mp.get(departamentos, department)
     obras = me.getValue(departamento)
     for obra in lt.iterator(obras):
-        if obra['Dimensions'] == '':
+        depth = obra['Depth (cm)']
+        diameter = obra['Diameter (cm)']
+        height = obra['Height (cm)']
+        length = obra['Length (cm)']
+        width = obra['Width (cm)']
+        x = Dimensiones(depth, diameter, height, length, width)
+        if x == -1:
             costo += 48
+        else:
+            costo_1 = x * 72
+            costo += costo_1
+    return costo
+
+def Dimensiones(depth, diameter, height, length, width):
+    contador = 0
+    no_hay = True
+    dimensiones = -1
+    medidas = lt.newList("ARRAY_LIST")
+    lt.addLast(medidas, depth)
+    lt.addLast(medidas, height)
+    lt.addLast(medidas, length)
+    lt.addLast(medidas, width)
+    lt.addLast(medidas, diameter)
+
+    posicion = 1
+    while posicion <= lt.size(medidas):
+        dimension = lt.getElement(medidas, posicion)
+        if (dimension != '') and (dimension != '0'):
+            lt.changeInfo(medidas, posicion, float(dimension))
+            contador += 1
+            no_hay = False
+        else:
+            lt.changeInfo(medidas, posicion, 1)
+        posicion += 1
+
+    factor = 10**(-2*contador)
+
+    if no_hay == False:
+        if diameter != '':
+            diameter = lt.getElement(medidas, 5)
+            height = lt.getElement(medidas, 2)
+            dimensiones = 3.1416 * ((diameter/2)**2) * height * factor/100
+        
+        else:
+            depth = lt.getElement(medidas, 1)
+            height = lt.getElement(medidas, 2)
+            length = lt.getElement(medidas, 3)
+            width = lt.getElement(medidas, 4)
+            dimensiones =  depth * height * length * width * factor
+
+    return dimensiones
+
 
 #FUNCIONES DE COMPARACIÓN
 def compareConstituentID(C1, C2):
