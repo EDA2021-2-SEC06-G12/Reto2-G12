@@ -96,17 +96,17 @@ while True:
         print("Las últimas 3 obras dentro de la mayor nacionalidad son:", lista[2])
     
     elif int(inputs[0]) == 7:
-        print("Transportar obras de un departamento: ")
         department = input ("Ingresa el nombre del departamento a buscar: ") #Drawings & Prints
         lista = controller.Costo_departamento(department, cont)
-        print(lista[3])
+        print("El número total de obras a transportar es", lista[0])
+        print("El costo total es de", lista[1], "USD aproximadamente.")
     
     elif int(inputs[0]) == 8:
         num_artistas = input("Ingrese la cantidad de artistas que desea clasificar: ") #7
         A_I = input("Ingresa el año inicial: ") #1914
         A_FN = input("Ingresa el año final: ") #1939
         lista_cronologica = controller.listar_artist_date(A_I, A_FN, cont)
-        print("Se cargaron un total de", lista_cronologica[0], "Artistas")
+        print("Se cargaron un total de", lista_cronologica[0], "Artistas.")
         cronologia = lista_cronologica[3]['elements']
         lista = controller.Artista_prolifico(cronologia, num_artistas, cont)
         print(lista)

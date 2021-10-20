@@ -298,7 +298,6 @@ def Obras_Nacionalidad(catalog):
 
 # REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
 def Costo_departamento(department, catalog):
-    peso = 0
     costo = 0
     departamentos = catalog['Department']
     departamento = mp.get(departamentos, department)
@@ -310,8 +309,6 @@ def Costo_departamento(department, catalog):
         height = obra['Height (cm)']
         length = obra['Length (cm)']
         width = obra['Width (cm)']
-        weight = obra['Weight (kg)']
-        peso += float(weight)
         x = Dimensiones(depth, diameter, height, length, width)
         if x == -1:
             costo += 48
@@ -321,7 +318,7 @@ def Costo_departamento(department, catalog):
 
     costo_total = round(costo, 3)
     
-    return total_obras, costo_total, peso
+    return total_obras, costo_total
 
 def Dimensiones(depth, diameter, height, length, width):
     contador = 0
