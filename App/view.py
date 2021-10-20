@@ -26,6 +26,7 @@ import controller
 assert cf
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
+from DISClib.ADT import list as lt
 
 """
 La vista se encarga de la interacción con el usuario
@@ -33,6 +34,32 @@ Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
+def req3_3ultimos_primeros(lst):
+    """sublistu=lt.subList(lst,-3,3)
+    sublistp=lt.subList(lst,1,3)
+    if lt.size(lst) >= 6:
+        for obra in lt.iterator(sublistp):
+            print (" ")
+            print("Titulo: ", obra["Title"])
+            print("Fecha: ", obra["Date"])
+            print("Medio: ", obra["Medium"])
+            print("Dimensiones: ", obra["Dimensions"])
+        
+        for obra in lt.iterator(sublistu):
+            print (" ")
+            print("Titulo: ", obra["Title"])
+            print("Fecha: ", obra["Date"])
+            print("Medio: ", obra["Medium"])
+            print("Dimensiones: ", obra["Dimensions"])
+        print (" ")
+    else:"""
+    for obra in lt.iterator(lst):
+        print (" ")
+        print("Titulo: ", obra["Title"])
+        print("Fecha: ", obra["Date"])
+        print("Medio: ", obra["Medium"])
+        print("Dimensiones: ", obra["Dimensions"])
+    print (" ")
 
 def printMenu():
     print("Bienvenido")
@@ -89,12 +116,18 @@ while True:
 
     elif int(inputs[0]) == 5:
         Name = input ("Ingresa el nombre del artista: ")
-        print("Obras de un artista por técnica: ")
-        lista = controller.clasificacion_medio_t_obra(Name, cont)
-        #print("El total de obras y sus primeras y ultimas son:", str(controller.clasificacion_medio_t_obra(Name, cont)))
-        print(lista)
-        #Louise Bourgeois
+        t_obras,t_medio, tecnica_mayor, lst_tecnicamayor= controller.clasificacion_medio_t_obra(Name, cont)
 
+        print ("el total de obras es: " + str(t_obras))
+        print ("el total de tecnicas es: " + str(t_medio))
+        print ("el nombre de la tecnica mas usada es: " + str(tecnica_mayor))
+        print ("el total de obras es: " + str(t_obras))
+        print ("las primeras y ultimas son: " )
+        req3_3ultimos_primeros(lst_tecnicamayor)
+        #print("El total de obras y sus primeras y ultimas son:", str(controller.clasificacion_medio_t_obra(Name, cont)))
+
+        #Louise Bourgeois
+        
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
         lista = controller.Obras_Nacionalidad(cont)
