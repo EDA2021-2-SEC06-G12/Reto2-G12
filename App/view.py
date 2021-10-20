@@ -24,7 +24,6 @@ import config as cf
 import sys
 import controller
 assert cf
-from DISClib.ADT import list as lt
 
 """
 La vista se encarga de la interacción con el usuario
@@ -32,15 +31,6 @@ Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
-
-def req3_3ultimos_primeros(lst):
-    for obra in lt.iterator(lst):
-        print (" ")
-        print("Titulo: ", obra["Title"])
-        print("Fecha: ", obra["Date"])
-        print("Medio: ", obra["Medium"])
-        print("Dimensiones: ", obra["Dimensions"])
-    print (" ")
 
 def printMenu():
     print("Bienvenido")
@@ -57,6 +47,7 @@ def printMenu():
 """
 Menu principal
 """
+
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
@@ -73,30 +64,29 @@ while True:
         print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
     
     elif int(inputs[0]) == 3:
-        A_I = input ("Ingresa el año inicial: ") #1920
-        A_FN = input ("Ingresa el año final: ") #1985
+        A_I = input("Ingresa el año inicial: ") #1920
+        A_FN = input("Ingresa el año final: ") #1985
         lista = controller.listar_artist_date(A_I, A_FN, cont)
-        print ("Se cargaron un total de", lista[0], "Artistas")
-        print ("Los primeros 3 artistas son:", lista[1])
-        print ("Los últimos 3 artistas son:", lista[2])
+        print("Se cargaron un total de", lista[0], "Artistas")
+        print("Los primeros 3 artistas son:", lista[1])
+        print("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 4:
-        F_I = input ("Ingresa la fecha inicial (AAAA-MM-DD): ") #1944-06-06
-        F_FN = input ("Ingresa la fecha final (AAAA-MM-DD): ") #1989-11-09
+        F_I = input("Ingresa la fecha inicial (AAAA-MM-DD): ") #1944-06-06
+        F_FN = input("Ingresa la fecha final (AAAA-MM-DD): ") #1989-11-09
         lista = controller.listar_artwork_date(F_I, F_FN, cont)
-        print ("Se cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.")
-        print ("Los primeros 3 artistas son:", lista[1])
-        print ("Los últimos 3 artistas son:", lista[2])
+        print("Se cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.")
+        print("Los primeros 3 artistas son:", lista[1])
+        print("Los últimos 3 artistas son:", lista[2])
 
     elif int(inputs[0]) == 5:
-        Name = input ("Ingresa el nombre del artista: ") #Louise Bourgeois
-        t_obras,t_medio, tecnica_mayor, lst_tecnicamayor= controller.clasificacion_medio_t_obra(Name, cont)
-        print ("el total de obras es: " + str(t_obras))
-        print ("el total de tecnicas es: " + str(t_medio))
-        print ("el nombre de la tecnica mas usada es: " + str(tecnica_mayor))
-        print ("el total de obras es: " + str(t_obras))
-        print ("las primeras y ultimas son: " )
-        req3_3ultimos_primeros(lst_tecnicamayor)
+        Name = input("Ingresa el nombre del artista: ") #Louise Bourgeois
+        lista = controller.clasificacion_medio_t_obra(Name, cont)
+        print("El total de obras es: " + str(lista[0]))
+        print("El total de técnicas es: " + str(lista[1]))
+        print("El nombre de la técnica más usada es: " + str(lista[2]))
+        print("Las primeras 3 obras dentro de la técnica más utilizada son:", lista[4])
+        print("Las últimas 3 obras dentro de la técnica más utilizada son:", lista[5])
         
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
@@ -109,11 +99,18 @@ while True:
         print("Transportar obras de un departamento: ")
         department = input ("Ingresa el nombre del departamento a buscar: ") #Drawings & Prints
         lista = controller.Costo_departamento(department, cont)
-        print(lista)
+        print(lista[3])
     
     elif int(inputs[0]) == 8:
-        print("Encontrar los artistas más prolíficos del museo: ")
-
+        num_artistas = input("Ingrese la cantidad de artistas que desea clasificar: ") #7
+        A_I = input("Ingresa el año inicial: ") #1914
+        A_FN = input("Ingresa el año final: ") #1939
+        lista_cronologica = controller.listar_artist_date(A_I, A_FN, cont)
+        print("Se cargaron un total de", lista_cronologica[0], "Artistas")
+        cronologia = lista_cronologica[3]['elements']
+        lista = controller.Artista_prolifico(cronologia, num_artistas, cont)
+        print(lista)
+        
     else:
         sys.exit(0)
 sys.exit(0)

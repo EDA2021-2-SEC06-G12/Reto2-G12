@@ -197,7 +197,7 @@ def listar_artist_date(A_I, A_FN, catalog):
     primeros = lt.subList(artista, 1, 3)
     ultimos = lt.subList(artista, lt.size(artista) - 2, 3)
 
-    return total, primeros['elements'], ultimos['elements']
+    return total, primeros['elements'], ultimos['elements'], artista
 
 # REQUERIMIENTO 2 (LISTAR CRONOLÓGICAMENTE LAS ADQUISICIONES)
 def listar_artwork_date(F_I, F_FN, catalog):
@@ -262,9 +262,11 @@ def clasificacion_medio_t_obra(Name, catalog):
         medio = obras['Medium']
         if tecnica_mayor == medio:
             lt.addLast(lst_tecnicamayor, obras)
+    
+    primeros_3 = lt.subList(lst_tecnicamayor, 1, 3)
+    ultimas = lt.subList(lst_tecnicamayor, lt.size(lst_tecnicamayor) - 2, 3)
 
-
-    return t_obras,t_medio, tecnica_mayor, lst_tecnicamayor
+    return t_obras, t_medio, tecnica_mayor, lst_tecnicamayor, primeros_3['elements'], ultimas['elements']
 
 # REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
 def Obras_Nacionalidad(catalog):
@@ -296,28 +298,37 @@ def Obras_Nacionalidad(catalog):
 
 # REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
 def Costo_departamento(department, catalog):
+    peso = 0
     costo = 0
     departamentos = catalog['Department']
     departamento = mp.get(departamentos, department)
     obras = me.getValue(departamento)
+    total_obras = lt.size(obras)
     for obra in lt.iterator(obras):
         depth = obra['Depth (cm)']
         diameter = obra['Diameter (cm)']
         height = obra['Height (cm)']
         length = obra['Length (cm)']
         width = obra['Width (cm)']
+        weight = obra['Weight (kg)']
+        peso += float(weight)
         x = Dimensiones(depth, diameter, height, length, width)
         if x == -1:
             costo += 48
         else:
             costo_1 = x * 72
             costo += costo_1
-    return costo
+
+    costo_total = round(costo, 3)
+    
+    return total_obras, costo_total, peso
 
 def Dimensiones(depth, diameter, height, length, width):
     contador = 0
     no_hay = True
     dimensiones = -1
+    posicion = 1
+
     medidas = lt.newList("ARRAY_LIST")
     lt.addLast(medidas, depth)
     lt.addLast(medidas, height)
@@ -325,7 +336,6 @@ def Dimensiones(depth, diameter, height, length, width):
     lt.addLast(medidas, width)
     lt.addLast(medidas, diameter)
 
-    posicion = 1
     while posicion <= lt.size(medidas):
         dimension = lt.getElement(medidas, posicion)
         if (dimension != '') and (dimension != '0'):
@@ -352,6 +362,20 @@ def Dimensiones(depth, diameter, height, length, width):
             dimensiones =  depth * height * length * width * factor
 
     return dimensiones
+
+# REQUERIMIENTO 6 (ENCONTRAR LOS ARTISTAS MÁS PROLÍFICOS)
+def Artista_prolifico(cronologia, num_artistas, catalog):
+    num_obras = lt.newList('ARRAY_LIST')
+    obras_artista = catalog['artista_obra']
+    for artista in cronologia:
+        nombre = artista['DisplayName']
+        entry = mp.get(obras_artista, nombre)
+        valor = me.getValue(entry)
+        tupla = valor, nombre
+        lt.addFirst(num_obras, tupla)
+    
+    orden = ordenamiento(num_obras)
+    return orden
 
 
 #FUNCIONES DE COMPARACIÓN
