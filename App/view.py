@@ -110,7 +110,6 @@ while True:
         department = input ("Ingresa el nombre del departamento a buscar: ") #Drawings & Prints
         lista = controller.Costo_departamento(department, cont)
         print(lista)
-        
     
     elif int(inputs[0]) == 8:
         print("Encontrar los artistas más prolíficos del museo: ")
