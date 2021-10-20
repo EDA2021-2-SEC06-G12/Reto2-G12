@@ -229,19 +229,42 @@ def clasificacion_medio_t_obra(Name, catalog):
     todos = lt.newList('ARRAY_LIST')
     medios = lt.newList('ARRAY_LIST')
     artistas = catalog['artista_obra']
+    
+
     artista = mp.get(artistas, Name)
     obras_artista = me.getValue(artista)
     for obras in lt.iterator(obras_artista):
         medio = obras['Medium']
-        lt.addFirst(medios, medio)
+        tec_incluida= False
+        for obra_i in lt.iterator(medios):
+            if medio == obra_i:
+                tec_incluida = True
+        if not tec_incluida:
+            lt.addLast(medios, medio)
+
+    contador_mayor = 0
+    tecnica_mayor = ""
     for obra_medio in lt.iterator(medios):
-        for medio_obra in lt.iterator(medios):
-            if obra_medio == medio_obra:
-                contador = 0
+        contador = 0
+        for obras in lt.iterator(obras_artista):
+            medio = obras['Medium']
+            if obra_medio == medio:               
                 contador += 1
-            tupla = medio_obra, contador
-            lt.addFirst(todos,tupla)
-    return todos
+        if contador > contador_mayor:
+            contador_mayor = contador
+            tecnica_mayor = obra_medio
+        tupla = obra_medio, contador
+        lt.addLast(todos,tupla)
+    t_medio=lt.size(todos)
+    t_obras = lt.size(obras_artista)
+    lst_tecnicamayor= lt.newList('ARRAY_LIST')
+    for obras in lt.iterator(obras_artista):
+        medio = obras['Medium']
+        if tecnica_mayor == medio:
+            lt.addLast(lst_tecnicamayor, obras)
+
+
+    return t_obras,t_medio, tecnica_mayor, lst_tecnicamayor
 
 # REQUERIMIENTO 4 (CLASIFICAR LAS OBRAS POR LA NACIONALIDAD DE SUS CREADORES)
 def Obras_Nacionalidad(catalog):
