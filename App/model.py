@@ -229,8 +229,6 @@ def clasificacion_medio_t_obra(Name, catalog):
     todos = lt.newList('ARRAY_LIST')
     medios = lt.newList('ARRAY_LIST')
     artistas = catalog['artista_obra']
-    
-
     artista = mp.get(artistas, Name)
     obras_artista = me.getValue(artista)
     for obras in lt.iterator(obras_artista):
@@ -262,7 +260,6 @@ def clasificacion_medio_t_obra(Name, catalog):
         medio = obras['Medium']
         if tecnica_mayor == medio:
             lt.addLast(lst_tecnicamayor, obras)
-    
     primeros_3 = lt.subList(lst_tecnicamayor, 1, 3)
     ultimas = lt.subList(lst_tecnicamayor, lt.size(lst_tecnicamayor) - 2, 3)
 
@@ -299,26 +296,38 @@ def Obras_Nacionalidad(catalog):
 # REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
 def Costo_departamento(department, catalog):
     costo = 0
+    mayor=0
+    lst_fechas_o=lt.newList('ARRAY_LIST')
+    lst_costo_i=lt.newList('ARRAY_LIST')
     departamentos = catalog['Department']
     departamento = mp.get(departamentos, department)
     obras = me.getValue(departamento)
     total_obras = lt.size(obras)
     for obra in lt.iterator(obras):
+        costo_i = 0
         depth = obra['Depth (cm)']
         diameter = obra['Diameter (cm)']
         height = obra['Height (cm)']
         length = obra['Length (cm)']
         width = obra['Width (cm)']
+        date= obra["Date"]
+        tupla_date= date,obras
+        lt.addLast(lst_fechas_o,tupla_date) #ordenar esta lista por las fechas de menor a mayor / retornar las tuplas de las primeras 5 obras mas antiguas
         x = Dimensiones(depth, diameter, height, length, width)
         if x == -1:
-            costo += 48
+            costo += 48 
+            costo_i = 48 
         else:
             costo_1 = x * 72
             costo += costo_1
+            costo_i = x * 72
+        tupla= obra, costo_i
+        lt.addLast(lst_costo_i,tupla) #toca ordenar esta lista y que me de las ultimas 5 tuplas(5 obras mas costosas) 
+        
 
     costo_total = round(costo, 3)
     
-    return total_obras, costo_total
+    return total_obras, costo_total,lst_costo_i
 
 def Dimensiones(depth, diameter, height, length, width):
     contador = 0
