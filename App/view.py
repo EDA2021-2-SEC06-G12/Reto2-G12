@@ -70,43 +70,29 @@ while True:
         A_FN = input("Ingresa el año final: ") #1985
         start_time = time.process_time()
         lista = controller.listar_artist_date(A_I, A_FN, cont)
-<<<<<<< HEAD
         print("Se cargaron un total de", lista[0], "Artistas")
         print("Los primeros 3 artistas son:", lista[1])
         print("Los últimos 3 artistas son:", lista[2])
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
-=======
-        print("\nSe cargaron un total de", lista[0], "Artistas\n")
-        print("Los primeros 3 artistas son:\n", lista[1])
-        print("Los últimos 3 artistas son:\n", lista[2])
-
->>>>>>> 6f8acadb34c0064e603d7b90e925daef0bdcef1e
     elif int(inputs[0]) == 4:
         
         F_I = input("Ingresa la fecha inicial (AAAA-MM-DD): ") #1944-06-06
         F_FN = input("Ingresa la fecha final (AAAA-MM-DD): ") #1989-11-09
         start_time = time.process_time()
         lista = controller.listar_artwork_date(F_I, F_FN, cont)
-<<<<<<< HEAD
         print("Se cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.")
         print("Los primeros 3 artistas son:", lista[1])
         print("Los últimos 3 artistas son:", lista[2])
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
-=======
-        print("\nSe cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.\n")
-        print("Las primeras 3 obras son:\n", lista[1])
-        print("Las últimas 3 obras son:\n", lista[2])
->>>>>>> 6f8acadb34c0064e603d7b90e925daef0bdcef1e
 
     elif int(inputs[0]) == 5:
         Name = input("Ingresa el nombre del artista: ") #Louise Bourgeois
         start_time = time.process_time()
         lista = controller.clasificacion_medio_t_obra(Name, cont)
-<<<<<<< HEAD
         print("El total de obras es: " + str(lista[0]))
         print("El total de técnicas es: " + str(lista[1]))
         print("El nombre de la técnica más usada es: " + str(lista[2]))
@@ -116,19 +102,10 @@ while True:
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
 
-=======
-        print("\nEl total de obras es:\n", str(lista[0]))
-        print("El total de técnicas es:\n", str(lista[1]))
-        print("El nombre de la técnica más usada es:\n", str(lista[2]))
-        print("Las primeras 3 obras dentro de la técnica más utilizada son:\n", lista[4])
-        print("Las últimas 3 obras dentro de la técnica más utilizada son:\n", lista[5])
-        
->>>>>>> 6f8acadb34c0064e603d7b90e925daef0bdcef1e
     elif int(inputs[0]) == 6:
         start_time = time.process_time()
         print("Obras por la nacionalidad de sus creadores: ")
         lista = controller.Obras_Nacionalidad(cont)
-<<<<<<< HEAD
         print("El top 10 de nacionalidades son:", lista[0])
         print("Las primeras 3 obras dentro de la mayor nacionalidad son:", lista[1])
         print("Las últimas 3 obras dentro de la mayor nacionalidad son:", lista[2])
@@ -136,30 +113,16 @@ while True:
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
 
-=======
-        print("\nEl top 10 de nacionalidades son:\n", lista[0])
-        print("Las primeras 3 obras dentro de la mayor nacionalidad son:\n", lista[1])
-        print("Las últimas 3 obras dentro de la mayor nacionalidad son:\n", lista[2])
-    
->>>>>>> 6f8acadb34c0064e603d7b90e925daef0bdcef1e
     elif int(inputs[0]) == 7:
         department = input ("Ingresa el nombre del departamento a buscar: ") #Drawings & Prints
         start_time = time.process_time()
         lista = controller.Costo_departamento(department, cont)
-<<<<<<< HEAD
         print("El número total de obras a transportar es", lista[0])
         print("El costo total es de", lista[1], "USD aproximadamente.")
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
 
-=======
-        print("\nEl número total de obras a transportar es\n", lista[0])
-        print("El costo total es de", lista[1], "USD aproximadamente.\n")
-        print("Las 5 obras más antiguas a transportar son:\n", lista[2])
-        print("Las 5 obras más costosas a transportar son:\n", lista[3])
-    
->>>>>>> 6f8acadb34c0064e603d7b90e925daef0bdcef1e
     elif int(inputs[0]) == 8:
         num_artistas = input("Ingrese la cantidad de artistas que desea clasificar: ") #7
         A_I = input("Ingresa el año inicial: ") #1914
