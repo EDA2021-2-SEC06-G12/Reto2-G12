@@ -58,10 +58,10 @@ while True:
         print("Catálogo Inicializado\n")
     
     elif int(inputs[0]) == 2:
-        print("Cargando información de los archivos ....")
+        print("Cargando información de los archivos ....\n")
         controller.loadData(cont)
         print('Artistas cargados: ' + str(controller.artistSize(cont)))
-        print('Obras de Arte cargadas: ' + str(controller.artworkSize(cont)))
+        print('\nObras de Arte cargadas: ' + str(controller.artworkSize(cont)))
     
     elif int(inputs[0]) == 3:
         A_I = input("Ingresa el año inicial: ") #1920
