@@ -296,9 +296,9 @@ def Obras_Nacionalidad(catalog):
 # REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
 def Costo_departamento(department, catalog):
     costo = 0
-    mayor=0
-    lst_fechas_o=lt.newList('ARRAY_LIST')
-    lst_costo_i=lt.newList('ARRAY_LIST')
+    mayor = 0
+    lst_fechas_o = lt.newList('ARRAY_LIST')
+    lst_costo_i = lt.newList('ARRAY_LIST')
     departamentos = catalog['Department']
     departamento = mp.get(departamentos, department)
     obras = me.getValue(departamento)
@@ -310,9 +310,11 @@ def Costo_departamento(department, catalog):
         height = obra['Height (cm)']
         length = obra['Length (cm)']
         width = obra['Width (cm)']
-        date= obra["Date"]
-        tupla_date= date,obras
-        lt.addLast(lst_fechas_o,tupla_date) #ordenar esta lista por las fechas de menor a mayor / retornar las tuplas de las primeras 5 obras mas antiguas
+        date = obra['Date']
+        if date != '':
+            tupla_date = date, obra
+            lt.addLast(lst_fechas_o, tupla_date)
+            
         x = Dimensiones(depth, diameter, height, length, width)
         if x == -1:
             costo += 48 
@@ -321,13 +323,33 @@ def Costo_departamento(department, catalog):
             costo_1 = x * 72
             costo += costo_1
             costo_i = x * 72
-        tupla= obra, costo_i
-        lt.addLast(lst_costo_i,tupla) #toca ordenar esta lista y que me de las ultimas 5 tuplas(5 obras mas costosas) 
-        
+        tupla = costo_i, obra
+        lt.addLast(lst_costo_i, tupla)
 
     costo_total = round(costo, 3)
+
+    orden_1 = ordenamientos(lst_costo_i)
+    orden_2 = ordenamientos(lst_fechas_o)
+
+    primeros = lt.subList(orden_2, 1, 5)
+    ultimos = lt.subList(orden_1, lt.size(orden_1) - 4, 5)
+
+    lista_f = Valores(primeros, ultimos)
     
-    return total_obras, costo_total,lst_costo_i
+    return total_obras, costo_total, lista_f[0]['elements'], lista_f[1]['elements']
+
+def Valores(primeros, ultimos):
+    primeros_5 = lt.newList('ARRAY_LIST')
+    ultimos_5 = lt.newList('ARRAY_LIST')
+    for valor in lt.iterator(primeros):
+        obra = valor[1]
+        lt.addLast(primeros_5, obra)
+    for value in lt.iterator(ultimos):
+        obras = value[1]
+        lt.addLast(ultimos_5, obras)
+    
+    return primeros_5, ultimos_5
+
 
 def Dimensiones(depth, diameter, height, length, width):
     contador = 0
@@ -460,6 +482,13 @@ def cmpA_IN(artist1, artist2):
         r = False 
     return r
 
+def cmpA(artist1, artist2):
+    if artist1[0] < artist2[0]:
+        r = True
+    else:
+        r = False 
+    return r
+
 #FUNCIONES DE ORDENAMIENTO
 def ordenamiento_artist_AI(catalog):
     sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_I)
@@ -467,6 +496,10 @@ def ordenamiento_artist_AI(catalog):
 
 def ordenamiento(catalog):
     sorted_list = mrgs.sort(catalog, cmpfunction=cmpA_IN)
+    return sorted_list
+
+def ordenamientos(catalog):
+    sorted_list = mrgs.sort(catalog, cmpfunction=cmpA)
     return sorted_list
 
 #FUNCIONES ADICIONALES
