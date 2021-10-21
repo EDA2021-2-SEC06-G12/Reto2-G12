@@ -125,15 +125,7 @@ while True:
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
 
-    elif int(inputs[0]) == 8:
-        num_artistas = input("Ingrese la cantidad de artistas que desea clasificar: ") #7
-        A_I = input("Ingresa el año inicial: ") #1914
-        A_FN = input("Ingresa el año final: ") #1939
-        lista_cronologica = controller.listar_artist_date(A_I, A_FN, cont)
-        print("\nSe cargaron un total de", lista_cronologica[0], "Artistas.\n")
-        cronologia = lista_cronologica[3]['elements']
-        lista = controller.Artista_prolifico(cronologia, num_artistas, cont)
-        print(lista)
+    
         
     else:
         sys.exit(0)

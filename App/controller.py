@@ -86,8 +86,3 @@ def Obras_Nacionalidad(cont):
 def Costo_departamento(department, cont):
     Algoritmo = model.Costo_departamento(department, cont)
     return Algoritmo
-
-# REQUERIMIENTO 6 (ENCONTRAR LOS ARTISTAS MÁS PROLÍFICOS)
-def Artista_prolifico(cronologia, num_artistas, cont):
-    Algoritmo = model.Artista_prolifico(cronologia, num_artistas, cont)
-    return Algoritmo

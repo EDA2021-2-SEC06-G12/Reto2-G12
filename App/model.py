@@ -296,7 +296,6 @@ def Obras_Nacionalidad(catalog):
 # REQUERIMIENTO 5 (TRANSPORTAR OBRAS DE UN DEPARTAMENTO)
 def Costo_departamento(department, catalog):
     costo = 0
-    mayor = 0
     lst_fechas_o = lt.newList('ARRAY_LIST')
     lst_costo_i = lt.newList('ARRAY_LIST')
     departamentos = catalog['Department']
@@ -356,14 +355,12 @@ def Dimensiones(depth, diameter, height, length, width):
     no_hay = True
     dimensiones = -1
     posicion = 1
-
     medidas = lt.newList("ARRAY_LIST")
     lt.addLast(medidas, depth)
     lt.addLast(medidas, height)
     lt.addLast(medidas, length)
     lt.addLast(medidas, width)
     lt.addLast(medidas, diameter)
-
     while posicion <= lt.size(medidas):
         dimension = lt.getElement(medidas, posicion)
         if (dimension != '') and (dimension != '0'):
@@ -373,37 +370,20 @@ def Dimensiones(depth, diameter, height, length, width):
         else:
             lt.changeInfo(medidas, posicion, 1)
         posicion += 1
-
     factor = 10**(-2*contador)
-
     if no_hay == False:
         if diameter != '':
             diameter = lt.getElement(medidas, 5)
             height = lt.getElement(medidas, 2)
             dimensiones = 3.1416 * ((diameter/2)**2) * height * factor/100
-        
         else:
             depth = lt.getElement(medidas, 1)
             height = lt.getElement(medidas, 2)
             length = lt.getElement(medidas, 3)
             width = lt.getElement(medidas, 4)
             dimensiones =  depth * height * length * width * factor
-
     return dimensiones
 
-# REQUERIMIENTO 6 (ENCONTRAR LOS ARTISTAS MÁS PROLÍFICOS)
-def Artista_prolifico(cronologia, num_artistas, catalog):
-    num_obras = lt.newList('ARRAY_LIST')
-    obras_artista = catalog['artista_obra']
-    for artista in cronologia:
-        nombre = artista['DisplayName']
-        entry = mp.get(obras_artista, nombre)
-        valor = me.getValue(entry)
-        tupla = valor, nombre
-        lt.addFirst(num_obras, tupla)
-    
-    orden = ordenamiento(num_obras)
-    return orden
 
 
 #FUNCIONES DE COMPARACIÓN
