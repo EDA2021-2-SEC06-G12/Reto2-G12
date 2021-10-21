@@ -68,16 +68,16 @@ while True:
         A_FN = input("Ingresa el año final: ") #1985
         lista = controller.listar_artist_date(A_I, A_FN, cont)
         print("\nSe cargaron un total de", lista[0], "Artistas\n")
-        print("Los primeros 3 artistas son:\n", lista[1])
-        print("Los últimos 3 artistas son:\n", lista[2])
+        print("Los primeros 3 artistas son:\n", lista[1], '\n')
+        print("Los últimos 3 artistas son:\n", lista[2], '\n')
 
     elif int(inputs[0]) == 4:
         F_I = input("Ingresa la fecha inicial (AAAA-MM-DD): ") #1944-06-06
         F_FN = input("Ingresa la fecha final (AAAA-MM-DD): ") #1989-11-09
         lista = controller.listar_artwork_date(F_I, F_FN, cont)
         print("\nSe cargaron un total de", lista[0], "obras, en donde un total de", lista[3], "fueron adquiridas por compra.\n")
-        print("Las primeras 3 obras son:\n", lista[1])
-        print("Las últimas 3 obras son:\n", lista[2])
+        print("Las primeras 3 obras son:\n", lista[1], '\n')
+        print("Las últimas 3 obras son:\n", lista[2], '\n')
 
     elif int(inputs[0]) == 5:
         Name = input("Ingresa el nombre del artista: ") #Louise Bourgeois
@@ -85,23 +85,23 @@ while True:
         print("\nEl total de obras es:\n", str(lista[0]))
         print("El total de técnicas es:\n", str(lista[1]))
         print("El nombre de la técnica más usada es:\n", str(lista[2]))
-        print("Las primeras 3 obras dentro de la técnica más utilizada son:\n", lista[4])
-        print("Las últimas 3 obras dentro de la técnica más utilizada son:\n", lista[5])
+        print("Las primeras 3 obras dentro de la técnica más utilizada son:\n", lista[4], '\n')
+        print("Las últimas 3 obras dentro de la técnica más utilizada son:\n", lista[5], '\n')
         
     elif int(inputs[0]) == 6:
         print("Obras por la nacionalidad de sus creadores: ")
         lista = controller.Obras_Nacionalidad(cont)
-        print("\nEl top 10 de nacionalidades son:\n", lista[0])
-        print("Las primeras 3 obras dentro de la mayor nacionalidad son:\n", lista[1])
-        print("Las últimas 3 obras dentro de la mayor nacionalidad son:\n", lista[2])
+        print("\nEl top 10 de nacionalidades es:\n", lista[0], '\n')
+        print("Las primeras 3 obras dentro de la mayor nacionalidad son:\n", lista[1], '\n')
+        print("Las últimas 3 obras dentro de la mayor nacionalidad son:\n", lista[2], '\n')
     
     elif int(inputs[0]) == 7:
         department = input ("Ingresa el nombre del departamento a buscar: ") #Drawings & Prints
         lista = controller.Costo_departamento(department, cont)
         print("\nEl número total de obras a transportar es\n", lista[0])
         print("El costo total es de", lista[1], "USD aproximadamente.\n")
-        print("Las 5 obras más antiguas a transportar son:\n", lista[2])
-        print("Las 5 obras más costosas a transportar son:\n", lista[3])
+        print("Las 5 obras más antiguas a transportar son:\n", lista[2], '\n')
+        print("Las 5 obras más costosas a transportar son:\n", lista[3], '\n')
     
     elif int(inputs[0]) == 8:
         num_artistas = input("Ingrese la cantidad de artistas que desea clasificar: ") #7
