@@ -119,6 +119,8 @@ while True:
         lista = controller.Costo_departamento(department, cont)
         print("El número total de obras a transportar es", lista[0])
         print("El costo total es de", lista[1], "USD aproximadamente.")
+        print("Las 5 obras más antiguas a transportar son:\n", lista[2])
+        print("Las 5 obras más costosas a transportar son:\n", lista[3])
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         print('El tiempo de ejecución es (mseg): ' + str(elapsed_time_mseg))
